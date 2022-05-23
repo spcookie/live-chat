@@ -1,0 +1,23 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: live-chart
+  datasource:
+    url: jdbc:mysql://localhost:3306/liveChart?charset=utf8mb4
+    username: root
+    password: lwx130YI
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    generate-ddl: true
+    database: mysql
+    open-in-view: false
+
+  redis:
+    host: localhost
+    port: 6379
+    database: 0

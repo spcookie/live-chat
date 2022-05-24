@@ -2,7 +2,9 @@ package com.cqut.livechat.entity.auth;
 
 import com.cqut.livechat.entity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,7 +1,5 @@
 package com.cqut.livechat.controller;
 
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 
 /**

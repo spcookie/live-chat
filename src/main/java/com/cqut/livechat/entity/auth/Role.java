@@ -1,7 +1,9 @@
 package com.cqut.livechat.entity.auth;
 
 import com.cqut.livechat.entity.BaseEntity;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;

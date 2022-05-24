@@ -2,7 +2,6 @@ package com.cqut.livechat.utils;
 
 import cn.hutool.jwt.JWT;
 
-import javax.xml.crypto.Data;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 

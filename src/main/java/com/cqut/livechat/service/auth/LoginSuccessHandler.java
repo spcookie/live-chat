@@ -1,8 +1,8 @@
 package com.cqut.livechat.service.auth;
 
 import com.alibaba.fastjson.JSON;
-import com.cqut.livechat.dto.common.ResultCode;
 import com.cqut.livechat.dto.common.Result;
+import com.cqut.livechat.dto.common.ResultCode;
 import com.cqut.livechat.entity.auth.User;
 import com.cqut.livechat.redis.auth.UserRedisUtil;
 import com.cqut.livechat.utils.TokenUtil;
@@ -14,7 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashSet;
 
 /**
  * @author Augenstern

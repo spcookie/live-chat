@@ -1,8 +1,8 @@
 package com.cqut.livechat.service.auth;
 
 import com.alibaba.fastjson.JSON;
-import com.cqut.livechat.dto.common.ResultCode;
 import com.cqut.livechat.dto.common.Result;
+import com.cqut.livechat.dto.common.ResultCode;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Service;

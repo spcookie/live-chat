@@ -1,7 +1,7 @@
-package com.cqut.livechat.entity.auth;
+package com.cqut.livechat.entity.message;
 
-import com.cqut.livechat.entity.BaseEntity;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
@@ -13,18 +13,18 @@ import java.util.Objects;
 
 /**
  * @author Augenstern
- * @date 2022/5/22
+ * @date 2022/5/24
  */
+@Entity
+@Table(name = "chat_image_message")
 @Getter
 @Setter
 @ToString(callSuper = true)
-@Entity
-@Table(name = "chat_authority")
-public class Authority extends BaseEntity {
-    @Column(name = "chat_authority_name", nullable = false, unique = true)
-    private String authorityName;
-    @Column(name = "chat_authority_describe")
-    private String describe;
+@RequiredArgsConstructor
+public class ChatImageMessage extends CommonMessage {
+
+    @Column(name = "chat_image", columnDefinition = "blob", nullable = false)
+    private byte[] image;
 
     @Override
     public boolean equals(Object o) {
@@ -34,8 +34,8 @@ public class Authority extends BaseEntity {
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
             return false;
         }
-        Authority authority = (Authority) o;
-        return getId() != null && Objects.equals(getId(), authority.getId());
+        ChatImageMessage that = (ChatImageMessage) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override

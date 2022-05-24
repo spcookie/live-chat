@@ -16,7 +16,7 @@ public class RedisUtil {
     public static RedisTemplate<String, Object> getRedisTemplate() {
         // 从spring容器中获取redisTemplate
         if (ObjectUtils.isEmpty(redisTemplate)) {
-            redisTemplate = SpringUtil.getBean("redisTemplate", RedisTemplate.class);
+            redisTemplate = BeanUtil.getBean("redisTemplate", RedisTemplate.class);
         }
         return redisTemplate;
     }

@@ -23,7 +23,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
         // 返回登录失败信息
         Result<String> result = Result.<String>builder()
                 .code(ResultCode.ERROR)
-                .message("登录失败")
+                .message("登录失败 " + exception.getLocalizedMessage())
                 .build();
         String json = JSON.toJSONString(result);
         response.setContentType("application/json;charset=utf-8");

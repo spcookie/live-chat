@@ -17,8 +17,17 @@ public class SocketUserUtil {
      * @return id
      */
     public static long getLoginUserId(WebSocketSession session) {
-        Map<String, Object> attributes = session.getAttributes();
-        User user  = (User) attributes.get(Security.USER.getVal());
+        User user = getLoginUser(session);
         return user.getId();
+    }
+
+    /**
+     * 获取当前连接的用户
+     * @param session Socket会话
+     * @return 当前用户
+     */
+    public static User getLoginUser(WebSocketSession session) {
+        Map<String, Object> attributes = session.getAttributes();
+        return (User) attributes.get(Security.USER.getVal());
     }
 }

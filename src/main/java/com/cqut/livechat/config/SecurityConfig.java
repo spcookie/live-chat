@@ -82,6 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         // 允许跨域
         http.cors();
+        //拦截规则
         http.authorizeRequests()
                 .antMatchers("/auth/login").anonymous()
                 .anyRequest().authenticated();

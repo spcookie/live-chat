@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.cqut.livechat.constant.MessageType;
 import com.cqut.livechat.dto.message.AuxiliaryMessageDto;
 import com.cqut.livechat.entity.message.ChatImageMessage;
-import com.cqut.livechat.entity.message.ChatTextMessage;
 import com.cqut.livechat.entity.message.CommonMessage;
 import com.cqut.livechat.service.message.AuxiliaryMessageCache;
 import com.cqut.livechat.service.message.CommonMessageService;

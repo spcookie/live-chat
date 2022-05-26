@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -20,7 +21,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "chat_common_message")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class CommonMessage extends BaseEntity {
+public class CommonMessage extends BaseEntity implements Serializable {
     @Column(name = "chat_from", nullable = false)
     private Long from;
     @Column(name = "chat_target", nullable = false)

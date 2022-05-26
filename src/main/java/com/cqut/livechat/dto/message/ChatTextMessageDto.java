@@ -1,8 +1,6 @@
 package com.cqut.livechat.dto.message;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Date;
 
@@ -10,12 +8,12 @@ import java.util.Date;
  * @author Augenstern
  * @date 2022/5/24
  */
-@Data
-@ToString
+@Getter
+@Setter
+@ToString(callSuper = true)
 @Builder
-public class ChatTextMessageDto {
-    private Long id;
-    private Long from;
-    private Date date;
+public class ChatTextMessageDto extends CommonMessageDto {
     private String text;
 }
+
+

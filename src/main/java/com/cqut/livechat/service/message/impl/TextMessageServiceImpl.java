@@ -50,12 +50,10 @@ public class TextMessageServiceImpl extends AbstractCommonMessageService {
     protected boolean sendTargetMessage(WebSocketSession session, CommonMessage message) {
         ChatTextMessage textMessage = this.castType(message);
         // 封装返回的消息
-        ChatTextMessageDto messageDto = ChatTextMessageDto.builder()
-                .id(textMessage.getId())
-                .from(textMessage.getFrom())
-                .date(textMessage.getDate())
-                .text(textMessage.getText())
-                .build();
+        ChatTextMessageDto messageDto = ChatTextMessageDto.builder().text(textMessage.getText()).build();
+        messageDto.setId(textMessage.getId());
+        messageDto.setFrom(textMessage.getFrom());
+        messageDto.setDate(textMessage.getDate());
         String text = JSON.toJSONString(messageDto);
         try {
             // 发送

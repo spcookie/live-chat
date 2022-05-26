@@ -1,6 +1,7 @@
 package com.cqut.livechat.entity.auth;
 
 import com.cqut.livechat.entity.BaseEntity;
+import com.cqut.livechat.entity.user.Account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,7 +28,7 @@ import java.util.Set;
 @ToString(callSuper = true)
 @Entity
 @Table(name = "chat_user")
-public class User extends BaseEntity implements UserDetails, Serializable{
+public class User extends BaseEntity implements UserDetails, Serializable {
 
     @Column(name = "chat_user_name", length = 11, unique = true, nullable = false)
     private String username;
@@ -49,6 +50,10 @@ public class User extends BaseEntity implements UserDetails, Serializable{
     )
     @JsonIgnore
     private Set<Role> roles;
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "chat_account_id", nullable = false, unique = true)
+    private Account account;
+
     @Transient
     private HashSet<String> auth = new HashSet<>();
     @Transient

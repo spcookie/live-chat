@@ -2,7 +2,10 @@ package com.cqut.livechat.service.message;
 
 import com.alibaba.fastjson.JSON;
 import com.cqut.livechat.constant.UserStatus;
+import com.cqut.livechat.entity.auth.User;
+import com.cqut.livechat.entity.friends.FriendShip;
 import com.cqut.livechat.entity.message.CommonMessage;
+import com.cqut.livechat.repository.friends.FriendRepository;
 import com.cqut.livechat.service.status.UserStatusService;
 import com.cqut.livechat.socket.ChatSocketCache;
 import com.cqut.livechat.utils.SocketUserUtil;
@@ -13,6 +16,8 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Augenstern
@@ -23,6 +28,8 @@ public abstract class AbstractCommonMessageService implements CommonMessageServi
 
     @Autowired
     protected UserStatusService userStatusService;
+    @Autowired
+    protected FriendRepository friendRepository;
 
     /**
      *  发送消息到目标客户端
@@ -58,8 +65,12 @@ public abstract class AbstractCommonMessageService implements CommonMessageServi
     public void handler(WebSocketSession session, CommonMessage message) {
         // 获取消息接受者
         Long target = message.getTarget();
-        //TODO: 在此校验消息接收者是否合法
-
+        // 校验消息接收者是否合法
+        boolean isLegal = this.verifyReceiverIsLegal(session, target);
+        if (!isLegal) {
+            this.sendReceiptMessage(session, "消息发送非法, 已取消发送");
+            return;
+        }
         // 持久保存消息
         boolean isSave = this.saveMessage(session, message);
         if (isSave) {
@@ -78,6 +89,23 @@ public abstract class AbstractCommonMessageService implements CommonMessageServi
             boolean b = this.sendTargetMessage(targetSession, message);
             log.info("消息发送状态 " + session.getRemoteAddress() + " -> " + targetSession.getRemoteAddress() + " :" + b);
         }
+    }
+
+    private boolean verifyReceiverIsLegal(WebSocketSession session, long target) {
+        // 获取当前连接用户
+        User user = SocketUserUtil.getLoginUser(session);
+        // 获取用户的好友关系
+        List<FriendShip> friendShip = friendRepository.findFriendShip(user);
+        // 查找是否该用户与目标用户是否是好友关系
+        for (FriendShip ship : friendShip) {
+            if (!Objects.equals(ship.getUser().getId(), target)) {
+                if (!Objects.equals(ship.getFriend().getId(), target)) {
+                    continue;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     protected CommonMessage getMessage(long id) {

@@ -31,7 +31,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         String token = TokenUtil.generateTokenWithId(id);
         int exp = TokenUtil.getExpFromToken(token);
         // 保存临时User对象到Redis
-        System.out.println("登录后 -> " + user);
         UserRedisUtil.saveUser(id, user, exp);
         // 封装结果
         Result<String> result = Result.<String>builder()

@@ -1,7 +1,6 @@
 package com.cqut.livechat.service.message;
 
 import com.cqut.livechat.dto.message.CommonMessageDto;
-import com.cqut.livechat.entity.message.CommonMessage;
 
 import java.util.List;
 

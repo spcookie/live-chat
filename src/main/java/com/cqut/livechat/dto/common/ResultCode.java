@@ -2,7 +2,6 @@ package com.cqut.livechat.dto.common;
 
 import com.alibaba.fastjson2.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * @author Augenstern

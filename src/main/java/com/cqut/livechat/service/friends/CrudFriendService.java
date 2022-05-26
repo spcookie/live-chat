@@ -1,8 +1,6 @@
 package com.cqut.livechat.service.friends;
 
 import com.cqut.livechat.dto.user.AccountDto;
-import com.cqut.livechat.entity.auth.User;
-import com.cqut.livechat.entity.user.Account;
 
 import java.util.List;
 

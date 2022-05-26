@@ -3,7 +3,6 @@ package com.cqut.livechat.controller.friends;
 import com.cqut.livechat.dto.common.Result;
 import com.cqut.livechat.dto.common.ResultCode;
 import com.cqut.livechat.dto.user.AccountDto;
-import com.cqut.livechat.entity.user.Account;
 import com.cqut.livechat.service.friends.CrudFriendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

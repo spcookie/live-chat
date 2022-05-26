@@ -1,8 +1,6 @@
 package com.cqut.livechat.service.message;
 
-import com.cqut.livechat.constant.Security;
 import com.cqut.livechat.dto.message.AuxiliaryMessageDto;
-import com.cqut.livechat.entity.auth.User;
 import com.cqut.livechat.utils.SocketUserUtil;
 import org.springframework.web.socket.WebSocketSession;
 

@@ -2,12 +2,10 @@ package com.cqut.livechat.service.message.impl;
 
 import com.cqut.livechat.MessageTypeException;
 import com.cqut.livechat.constant.MessageType;
-import com.cqut.livechat.dto.message.AuxiliaryMessageDto;
 import com.cqut.livechat.entity.message.ChatImageMessage;
 import com.cqut.livechat.entity.message.CommonMessage;
 import com.cqut.livechat.repository.message.ChatImageMessageRepository;
 import com.cqut.livechat.service.message.AbstractCommonMessageService;
-import com.cqut.livechat.service.message.AuxiliaryMessageCache;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

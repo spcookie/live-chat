@@ -1,12 +1,10 @@
 package com.cqut.livechat.dto.message;
 
 import com.cqut.livechat.constant.MessageType;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**

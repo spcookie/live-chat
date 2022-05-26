@@ -7,8 +7,6 @@ import com.cqut.livechat.dto.message.CommonMessageDto;
 import com.cqut.livechat.entity.message.ChatImageMessage;
 import com.cqut.livechat.entity.message.ChatTextMessage;
 import com.cqut.livechat.entity.message.CommonMessage;
-import com.cqut.livechat.repository.message.ChatImageMessageRepository;
-import com.cqut.livechat.repository.message.ChatTextMessageRepository;
 import com.cqut.livechat.repository.message.CommonMessageRepository;
 import com.cqut.livechat.service.BaseService;
 import com.cqut.livechat.service.message.HistoricalMessageService;
@@ -19,10 +17,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Augenstern

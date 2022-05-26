@@ -1,7 +1,6 @@
 package com.cqut.livechat.repository.message;
 
 import com.cqut.livechat.entity.message.ChatImageMessage;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

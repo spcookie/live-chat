@@ -1,9 +1,6 @@
 package com.cqut.livechat.repository.message;
 
 import com.cqut.livechat.entity.message.CommonMessage;
-import org.hibernate.annotations.ManyToAny;
-import org.hibernate.annotations.SortComparator;
-import org.hibernate.annotations.SortNatural;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;

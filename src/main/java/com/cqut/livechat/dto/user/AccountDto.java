@@ -1,6 +1,5 @@
 package com.cqut.livechat.dto.user;
 
-import com.cqut.livechat.entity.user.Account;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

@@ -4,7 +4,6 @@ import com.cqut.livechat.dto.common.Result;
 import com.cqut.livechat.dto.common.ResultCode;
 import com.cqut.livechat.dto.message.CommonMessageDto;
 import com.cqut.livechat.service.message.HistoricalMessageService;
-import org.aspectj.bridge.Message;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

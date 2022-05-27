@@ -16,7 +16,7 @@ import javax.validation.ConstraintViolationException;
 @Slf4j
 public class ExceptionHandleController {
 
-    @ExceptionHandler(ConstraintViolationException.class)
+    @ExceptionHandler({ConstraintViolationException.class})
     public Result<String> illegalParameterHandler(Exception e) {
         ConstraintViolationException violationException = (ConstraintViolationException) e;
         log.error(violationException.getLocalizedMessage());

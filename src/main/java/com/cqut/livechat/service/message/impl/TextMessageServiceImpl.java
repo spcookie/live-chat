@@ -67,13 +67,12 @@ public class TextMessageServiceImpl extends AbstractCommonMessageService {
     }
 
     @Override
-    protected boolean saveMessage(CommonMessage message) {
+    protected CommonMessage saveMessage(CommonMessage message) {
         populatePublicFields(message);
         // 消息类型转换
         ChatTextMessage textMessage = this.castType(message);
         log.info(textMessage.toString());
         // 持久化消息
-        ChatTextMessage save = chatTextMessageRepository.save(textMessage);
-        return save.getId() != null;
+        return chatTextMessageRepository.save(textMessage);
     }
 }

@@ -21,6 +21,10 @@ public class BaseService {
     @Autowired
     private FriendRepository friendRepository;
 
+    /**
+     * 获取登录用户
+     * @return 登录用户
+     */
     public User getLoginUser() {
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
@@ -30,11 +34,20 @@ public class BaseService {
         return  (User) authentication.getPrincipal();
     }
 
+    /**
+     * 获取登录用户id
+     * @return id
+     */
     public Long getLoginUserId() {
         User loginUser = getLoginUser();
         return ObjectUtils.isEmpty(loginUser) ? null : loginUser.getId();
     }
 
+    /**
+     * 校验是否是好友关系
+     * @param id 好友id
+     * @return 是否是好友关系
+     */
     public boolean verifyIsFriend(long id) {
         User user = getLoginUser();
         // 获取用户的好友关系
@@ -49,5 +62,14 @@ public class BaseService {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 判断是否存在用户
+     * @param id 用户id
+     * @return true
+     */
+    public boolean userIsExist(long id) {
+        return true;
     }
 }

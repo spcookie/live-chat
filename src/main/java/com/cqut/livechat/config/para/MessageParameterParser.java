@@ -3,12 +3,7 @@ package com.cqut.livechat.config.para;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cqut.livechat.constant.MessageType;
-import com.cqut.livechat.dto.message.ChatImageMessageDto;
-import com.cqut.livechat.dto.message.ChatTextMessageDto;
-import com.cqut.livechat.dto.message.CommonMessageDto;
 import com.cqut.livechat.dto.message.MessageWithTypeDto;
-import com.cqut.livechat.entity.message.ChatImageMessage;
-import com.cqut.livechat.entity.message.ChatTextMessage;
 import com.cqut.livechat.entity.message.CommonMessage;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -19,7 +14,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
-import java.lang.reflect.Type;
 
 /**
  * @author Augenstern

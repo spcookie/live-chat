@@ -65,13 +65,12 @@ public class ImageMessageServiceImpl extends AbstractCommonMessageService {
     }
 
     @Override
-    protected boolean saveMessage(CommonMessage message) {
+    protected CommonMessage saveMessage(CommonMessage message) {
         ChatImageMessage imageMessage = this.castType(message);
         // 填充公共字段
         super.populatePublicFields(imageMessage);
         // 持久化消息
-        ChatImageMessage save = imageMessageRepository.save(imageMessage);
-        return save.getId() != null;
+        return imageMessageRepository.save(imageMessage);
     }
 
     @Override

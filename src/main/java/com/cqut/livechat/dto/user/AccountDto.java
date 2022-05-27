@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 
 /**
  * @author Augenstern
@@ -21,7 +22,7 @@ public class AccountDto {
     private String username;
     @Length(max = 4)
     private String name;
-    @Length(max = 11)
+    @Pattern(regexp = "[0-9]{11}")
     private String phone;
     @Range(min = 1, max = 150)
     private Integer age;

@@ -1,6 +1,6 @@
 package com.cqut.livechat.constant;
 
-import com.cqut.livechat.dto.message.AuxiliaryMessageDto;
+import com.cqut.livechat.entity.message.AddFriendMessage;
 import com.cqut.livechat.entity.message.ChatImageMessage;
 import com.cqut.livechat.entity.message.ChatTextMessage;
 import com.cqut.livechat.entity.message.CommonMessage;
@@ -15,9 +15,9 @@ public enum MessageType {
      */
     TEXT(ChatTextMessage.class),
     /**
-     * 辅助消息
+     * 添加好友消息
      */
-    AUXILIARY(AuxiliaryMessageDto.class),
+    ADD_FRIEND(AddFriendMessage.class),
     /**
      * 图片
      */

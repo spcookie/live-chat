@@ -20,5 +20,11 @@ public interface MessageService {
      */
     List<CommonMessageDto> getSimpleMessage(long id, int page, int size);
 
+    /**
+     * 发送消息通用方法
+     * 根据消息类型选择对应消息处理器处理消息
+     * @param messageWithType 带消息类型的消息
+     * @return 发送状态信息
+     */
     String sendMessage(MessageWithTypeDto<CommonMessage> messageWithType);
 }

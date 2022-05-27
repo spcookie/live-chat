@@ -21,6 +21,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 /**
  * @author Augenstern
@@ -41,6 +42,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     AuthenticationEntryPoint entryPoint;
     @Autowired
     AccessDeniedHandler deniedHandler;
+    @Autowired
+    LogoutSuccessHandler logoutSuccessHandler;
 
     @Bean
     public TokenAuthenticationFilter tokenAuthenticationFilter() {
@@ -88,6 +91,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
         // 禁用session
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
+        // 退出登录
+        http.logout().logoutUrl("/logout").clearAuthentication(true).logoutSuccessHandler(logoutSuccessHandler);
         // 添加未认证处理器
         http.exceptionHandling().authenticationEntryPoint(entryPoint);
         // 添加无权限拒绝访问处理器

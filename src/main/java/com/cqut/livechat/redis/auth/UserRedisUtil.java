@@ -20,4 +20,9 @@ public class UserRedisUtil {
         String key = REDIS_KEY_PREFIX_USER + id;
         return RedisUtil.get(key, User.class);
     }
+
+    public static void delUser(long id) {
+        String key = REDIS_KEY_PREFIX_USER + id;
+        RedisUtil.del(key);
+    }
 }

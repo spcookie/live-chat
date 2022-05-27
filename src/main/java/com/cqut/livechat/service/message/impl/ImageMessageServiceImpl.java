@@ -1,7 +1,9 @@
 package com.cqut.livechat.service.message.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.cqut.livechat.MessageTypeException;
 import com.cqut.livechat.constant.MessageType;
+import com.cqut.livechat.dto.message.ChatImageMessageDto;
 import com.cqut.livechat.entity.message.ChatImageMessage;
 import com.cqut.livechat.entity.message.CommonMessage;
 import com.cqut.livechat.repository.message.ChatImageMessageRepository;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.BinaryMessage;
+import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
@@ -43,9 +46,17 @@ public class ImageMessageServiceImpl extends AbstractCommonMessageService {
     protected boolean sendTargetMessage(WebSocketSession session, CommonMessage message) {
         // 转换消息
         ChatImageMessage imageMessage = this.castType(message);
+        // 将byte转换为Base64
+        String imageBase64 = new String(imageMessage.getImage());
+        ChatImageMessageDto messageDto = ChatImageMessageDto.builder().imageBase64(imageBase64).build();
+        messageDto.setType(MessageType.IMAGE);
+        messageDto.setId(imageMessage.getId());
+        messageDto.setFrom(imageMessage.getFrom());
+        messageDto.setDate(imageMessage.getDate());
+        String text = JSON.toJSONString(messageDto);
         try {
             // 发送
-            session.sendMessage(new BinaryMessage(imageMessage.getImage()));
+            session.sendMessage(new TextMessage(text));
             return true;
         } catch (IOException e) {
             log.error(e.getMessage());
@@ -54,14 +65,13 @@ public class ImageMessageServiceImpl extends AbstractCommonMessageService {
     }
 
     @Override
-    protected boolean saveMessage(WebSocketSession session, CommonMessage message) {
+    protected boolean saveMessage(CommonMessage message) {
         ChatImageMessage imageMessage = this.castType(message);
         // 填充公共字段
-        super.populatePublicFields(session, imageMessage);
+        super.populatePublicFields(imageMessage);
         // 持久化消息
         ChatImageMessage save = imageMessageRepository.save(imageMessage);
         return save.getId() != null;
-//        return true;
     }
 
     @Override

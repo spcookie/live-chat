@@ -23,9 +23,9 @@ public class AuxiliaryMessageServiceImpl extends AbstractCommonMessageService {
     }
 
     @Override
-    protected boolean saveMessage(WebSocketSession session, CommonMessage message) {
+    protected boolean saveMessage(CommonMessage message) {
         AuxiliaryMessageDto auxiliaryMessageDto = castType(message);
-        AuxiliaryMessageCache.add(session, auxiliaryMessageDto);
+//        AuxiliaryMessageCache.add(session, auxiliaryMessageDto);
         return true;
     }
 
@@ -42,9 +42,9 @@ public class AuxiliaryMessageServiceImpl extends AbstractCommonMessageService {
     }
 
     @Override
-    public String handler(WebSocketSession session, CommonMessage message) {
+    public String handler(CommonMessage message) {
         log.info("收到辅助消息 -> " + message);
-        saveMessage(session, message);
+        saveMessage(message);
         return null;
     }
 

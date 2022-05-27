@@ -51,6 +51,7 @@ public class TextMessageServiceImpl extends AbstractCommonMessageService {
         ChatTextMessage textMessage = this.castType(message);
         // 封装返回的消息
         ChatTextMessageDto messageDto = ChatTextMessageDto.builder().text(textMessage.getText()).build();
+        messageDto.setType(MessageType.TEXT);
         messageDto.setId(textMessage.getId());
         messageDto.setFrom(textMessage.getFrom());
         messageDto.setDate(textMessage.getDate());
@@ -66,8 +67,8 @@ public class TextMessageServiceImpl extends AbstractCommonMessageService {
     }
 
     @Override
-    protected boolean saveMessage(WebSocketSession session, CommonMessage message) {
-        populatePublicFields(session, message);
+    protected boolean saveMessage(CommonMessage message) {
+        populatePublicFields(message);
         // 消息类型转换
         ChatTextMessage textMessage = this.castType(message);
         log.info(textMessage.toString());

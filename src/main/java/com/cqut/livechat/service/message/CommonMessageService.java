@@ -11,11 +11,10 @@ import org.springframework.web.socket.WebSocketSession;
 public interface CommonMessageService {
     /**
      *  处理消息
-     * @param session 套接字会话
      * @param message 代类型的消息
      * @return 返回消息发送状态
      */
-    String handler(WebSocketSession session, CommonMessage message);
+    String handler(CommonMessage message);
 
     /**
      * 支持处理的消息

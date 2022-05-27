@@ -87,6 +87,6 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         CommonMessageService service = messageHandlerAdapter.adaptation(type);
         Long loginUserId = getLoginUserId();
         WebSocketSession session = ChatSocketCache.get(loginUserId);
-        return service.handler(session, message);
+        return service.handler(message);
     }
 }

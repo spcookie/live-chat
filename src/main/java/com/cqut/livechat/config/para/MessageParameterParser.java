@@ -3,7 +3,12 @@ package com.cqut.livechat.config.para;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cqut.livechat.constant.MessageType;
+import com.cqut.livechat.dto.message.ChatImageMessageDto;
+import com.cqut.livechat.dto.message.ChatTextMessageDto;
+import com.cqut.livechat.dto.message.CommonMessageDto;
 import com.cqut.livechat.dto.message.MessageWithTypeDto;
+import com.cqut.livechat.entity.message.ChatImageMessage;
+import com.cqut.livechat.entity.message.ChatTextMessage;
 import com.cqut.livechat.entity.message.CommonMessage;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -14,6 +19,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
+import java.lang.reflect.Type;
 
 /**
  * @author Augenstern
@@ -24,7 +30,7 @@ public class MessageParameterParser implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         // 支持的参数类型
-        return parameter.getParameterAnnotation(Message.class) != null;
+        return parameter.getParameterType().equals(MessageWithTypeDto.class);
     }
 
     @Override
@@ -42,6 +48,9 @@ public class MessageParameterParser implements HandlerMethodArgumentResolver {
         JSONObject jsonObject = JSON.parseObject(body);
         MessageType type = jsonObject.getObject("type", MessageType.class);
         CommonMessage message = jsonObject.getObject("message", type.getType());
-        return MessageWithTypeDto.builder().type(type).message(message).build();
+        return MessageWithTypeDto.builder()
+                .type(type)
+                .message(message)
+                .build();
     }
 }

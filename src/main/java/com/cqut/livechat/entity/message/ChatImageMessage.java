@@ -1,5 +1,6 @@
 package com.cqut.livechat.entity.message;
 
+import com.alibaba.fastjson2.annotation.JSONField;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,8 @@ import org.hibernate.Hibernate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
@@ -23,8 +26,18 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class ChatImageMessage extends CommonMessage {
 
-    @Column(name = "chat_image", columnDefinition = "blob", nullable = false)
+    @Transient
+    private String imageBase64;
+    @Column(name = "chat_image", columnDefinition = "mediumblob", nullable = false)
+    @JSONField(deserialize = false, serialize = false)
     private byte[] image;
+
+    public byte[] getImage() {
+        if (image == null) {
+            this.setImage(this.getImageBase64().getBytes(StandardCharsets.UTF_8));
+        }
+        return image;
+    }
 
     @Override
     public boolean equals(Object o) {

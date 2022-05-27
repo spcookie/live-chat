@@ -14,5 +14,6 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @Builder
 public class ChatImageMessageDto extends CommonMessageDto {
+    private String imageBase64;
     private byte[] image;
 }

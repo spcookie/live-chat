@@ -1,6 +1,5 @@
 package com.cqut.livechat.controller.message;
 
-import com.cqut.livechat.config.para.Message;
 import com.cqut.livechat.dto.common.Result;
 import com.cqut.livechat.dto.common.ResultCode;
 import com.cqut.livechat.dto.message.CommonMessageDto;
@@ -48,8 +47,8 @@ public class MessageController {
     }
 
     @PutMapping("/send")
-    public Result<String> sendMessage(@Message MessageWithTypeDto<CommonMessage> messageWithType) {
-        String result = messageService.sendMessage(messageWithType);
+    public Result<String> sendMessage(MessageWithTypeDto<CommonMessage> message) {
+        String result = messageService.sendMessage(message);
         return Result.<String>builder()
                 .code(ResultCode.OK)
                 .message("消息发送状态")

@@ -42,9 +42,10 @@ public class AuxiliaryMessageServiceImpl extends AbstractCommonMessageService {
     }
 
     @Override
-    public void handler(WebSocketSession session, CommonMessage message) {
+    public String handler(WebSocketSession session, CommonMessage message) {
         log.info("收到辅助消息 -> " + message);
         saveMessage(session, message);
+        return null;
     }
 
     @Override

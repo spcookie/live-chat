@@ -4,18 +4,23 @@ import com.cqut.livechat.constant.MessageType;
 import com.cqut.livechat.dto.message.ChatImageMessageDto;
 import com.cqut.livechat.dto.message.ChatTextMessageDto;
 import com.cqut.livechat.dto.message.CommonMessageDto;
+import com.cqut.livechat.dto.message.MessageWithTypeDto;
 import com.cqut.livechat.entity.message.ChatImageMessage;
 import com.cqut.livechat.entity.message.ChatTextMessage;
 import com.cqut.livechat.entity.message.CommonMessage;
 import com.cqut.livechat.repository.message.CommonMessageRepository;
 import com.cqut.livechat.service.BaseService;
-import com.cqut.livechat.service.message.HistoricalMessageService;
+import com.cqut.livechat.service.message.CommonMessageService;
+import com.cqut.livechat.service.message.MessageHandlerAdapter;
+import com.cqut.livechat.service.message.MessageService;
+import com.cqut.livechat.socket.ChatSocketCache;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.socket.WebSocketSession;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +32,10 @@ import java.util.List;
 @Service
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
-public class HistoricalMessageServiceImpl extends BaseService implements HistoricalMessageService {
+public class MessageServiceImpl extends BaseService implements MessageService {
 
+    @Autowired
+    private MessageHandlerAdapter messageHandlerAdapter;
     @Autowired
     private CommonMessageRepository commonMessageRepository;
 
@@ -71,5 +78,15 @@ public class HistoricalMessageServiceImpl extends BaseService implements Histori
             }
         });
         return commonMessageDtoList;
+    }
+
+    @Override
+    public String sendMessage(MessageWithTypeDto<CommonMessage> messageWithType) {
+        MessageType type = messageWithType.getType();
+        CommonMessage message = messageWithType.getMessage();
+        CommonMessageService service = messageHandlerAdapter.adaptation(type);
+        Long loginUserId = getLoginUserId();
+        WebSocketSession session = ChatSocketCache.get(loginUserId);
+        return service.handler(session, message);
     }
 }

@@ -1,6 +1,5 @@
 package com.cqut.livechat.service.message;
 
-import com.alibaba.fastjson.JSON;
 import com.cqut.livechat.constant.UserStatus;
 import com.cqut.livechat.entity.auth.User;
 import com.cqut.livechat.entity.friends.FriendShip;
@@ -11,10 +10,8 @@ import com.cqut.livechat.socket.ChatSocketCache;
 import com.cqut.livechat.utils.SocketUserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -47,37 +44,23 @@ public abstract class AbstractCommonMessageService implements CommonMessageServi
      */
     protected abstract boolean saveMessage(WebSocketSession session, CommonMessage message);
 
-    /**
-     * 客户端收到消息后发送的回执消息
-     * @param session 套接字会话
-     * @param obj 发送的消息对象
-     */
-    protected <T> void sendReceiptMessage(WebSocketSession session, T obj) {
-        String json = JSON.toJSONString(obj);
-        try {
-            session.sendMessage(new TextMessage(json));
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-    }
-
     @Override
-    public void handler(WebSocketSession session, CommonMessage message) {
+    public String handler(WebSocketSession session, CommonMessage message) {
         // 获取消息接受者
         Long target = message.getTarget();
         // 校验消息接收者是否合法
         boolean isLegal = this.verifyReceiverIsLegal(session, target);
         if (!isLegal) {
-            this.sendReceiptMessage(session, "消息发送非法, 已取消发送");
-            return;
+            return "消息发送非法, 已取消发送";
         }
         // 持久保存消息
         boolean isSave = this.saveMessage(session, message);
+        String result;
         if (isSave) {
             log.info("消息保存成功 -> " + message);
-            this.sendReceiptMessage(session ,"消息发送成功");
+            result = "消息发送成功";
         } else {
-            this.sendReceiptMessage(session ,"消息发送失败");
+            result = "消息发送失败";
         }
         // 获取接收者登录状态
         UserStatus status = userStatusService.getUserLoginStatus(target);
@@ -89,6 +72,7 @@ public abstract class AbstractCommonMessageService implements CommonMessageServi
             boolean b = this.sendTargetMessage(targetSession, message);
             log.info("消息发送状态 " + session.getRemoteAddress() + " -> " + targetSession.getRemoteAddress() + " :" + b);
         }
+        return result;
     }
 
     private boolean verifyReceiverIsLegal(WebSocketSession session, long target) {
@@ -106,11 +90,6 @@ public abstract class AbstractCommonMessageService implements CommonMessageServi
             return true;
         }
         return false;
-    }
-
-    protected CommonMessage getMessage(long id) {
-        //TODO: 消息获取实现
-        return null;
     }
 
     protected void populatePublicFields(WebSocketSession session, CommonMessage message) {

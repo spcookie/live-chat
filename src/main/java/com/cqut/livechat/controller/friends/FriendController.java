@@ -1,7 +1,6 @@
 package com.cqut.livechat.controller.friends;
 
 import com.cqut.livechat.dto.common.Result;
-import com.cqut.livechat.dto.common.ResultCode;
 import com.cqut.livechat.dto.message.AddFriendMessageDto;
 import com.cqut.livechat.dto.user.AccountDto;
 import com.cqut.livechat.service.friends.CrudFriendService;

@@ -1,11 +1,10 @@
 package com.cqut.livechat.controller.message;
 
 import com.cqut.livechat.dto.common.Result;
-import com.cqut.livechat.dto.common.ResultCode;
-import com.cqut.livechat.dto.message.*;
-import com.cqut.livechat.entity.message.AddFriendMessage;
-import com.cqut.livechat.entity.message.ChatTextMessage;
-import com.cqut.livechat.entity.message.CommonMessage;
+import com.cqut.livechat.dto.message.AddFriendMessageDto;
+import com.cqut.livechat.dto.message.ChatImageMessageDto;
+import com.cqut.livechat.dto.message.ChatTextMessageDto;
+import com.cqut.livechat.dto.message.CommonMessageDto;
 import com.cqut.livechat.service.message.MessageService;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;

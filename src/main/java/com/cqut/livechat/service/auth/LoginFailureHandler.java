@@ -1,6 +1,5 @@
 package com.cqut.livechat.service.auth;
 
-import cn.hutool.json.JSON;
 import com.cqut.livechat.dto.common.Result;
 import com.cqut.livechat.dto.common.ResultCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,7 +7,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

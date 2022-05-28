@@ -1,6 +1,5 @@
 package com.cqut.livechat.service.auth;
 
-import cn.hutool.json.JSON;
 import com.cqut.livechat.dto.common.Result;
 import com.cqut.livechat.dto.common.ResultCode;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,9 +1,9 @@
 package com.cqut.livechat.service.message;
 
-import com.cqut.livechat.dto.message.*;
-import com.cqut.livechat.entity.message.ChatImageMessage;
-import com.cqut.livechat.entity.message.ChatTextMessage;
-import com.cqut.livechat.entity.message.CommonMessage;
+import com.cqut.livechat.dto.message.AddFriendMessageDto;
+import com.cqut.livechat.dto.message.ChatImageMessageDto;
+import com.cqut.livechat.dto.message.ChatTextMessageDto;
+import com.cqut.livechat.dto.message.CommonMessageDto;
 
 import java.util.List;
 

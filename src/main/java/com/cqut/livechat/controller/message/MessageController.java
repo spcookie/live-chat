@@ -1,10 +1,7 @@
 package com.cqut.livechat.controller.message;
 
 import com.cqut.livechat.dto.common.Result;
-import com.cqut.livechat.dto.message.AddFriendMessageDto;
-import com.cqut.livechat.dto.message.ChatImageMessageDto;
-import com.cqut.livechat.dto.message.ChatTextMessageDto;
-import com.cqut.livechat.dto.message.CommonMessageDto;
+import com.cqut.livechat.dto.message.*;
 import com.cqut.livechat.service.message.MessageService;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,22 +43,22 @@ public class MessageController {
     }
 
     @PutMapping("/send/text")
-    public Result<Void> sendTextMessage(@RequestBody @Validated ChatTextMessageDto message) {
-        String result = messageService.sendTextMessage(message);
-        return Result.success(result, null);
+    public Result<MessageSendStatusDto> sendTextMessage(@RequestBody @Validated ChatTextMessageDto message) {
+        MessageSendStatusDto result = messageService.sendTextMessage(message);
+        return Result.success(null, result);
     }
 
     @PutMapping("/send/image")
-    public Result<String> sendImageMessage(@RequestBody @Validated ChatImageMessageDto message) {
-        String result = messageService.sendImageMessage(message);
-        return Result.success(result, null);
+    public Result<MessageSendStatusDto> sendImageMessage(@RequestBody @Validated ChatImageMessageDto message) {
+        MessageSendStatusDto result = messageService.sendImageMessage(message);
+        return Result.success(null, result);
     }
 
     @PutMapping("/send/addFriend/{target}")
-    public Result<String> sendAddFriendMessage(@PathVariable("target") long id) {
+    public Result<MessageSendStatusDto> sendAddFriendMessage(@PathVariable("target") long id) {
         AddFriendMessageDto messageDto = new AddFriendMessageDto();
         messageDto.setTarget(id);
-        String result = messageService.sendAddFriendMessage(messageDto);
-        return Result.success(result, null);
+        MessageSendStatusDto result = messageService.sendAddFriendMessage(messageDto);
+        return Result.success(null, result);
     }
 }

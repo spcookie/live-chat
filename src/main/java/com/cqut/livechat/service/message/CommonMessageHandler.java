@@ -1,5 +1,6 @@
 package com.cqut.livechat.service.message;
 
+import com.cqut.livechat.dto.message.MessageSendStatusDto;
 import com.cqut.livechat.entity.message.CommonMessage;
 
 /**
@@ -12,5 +13,5 @@ public interface CommonMessageHandler<T extends CommonMessage> {
      * @param message 代类型的消息
      * @return 返回消息发送状态
      */
-    String handler(T message);
+    MessageSendStatusDto handler(T message);
 }

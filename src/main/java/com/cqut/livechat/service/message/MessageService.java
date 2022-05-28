@@ -1,9 +1,6 @@
 package com.cqut.livechat.service.message;
 
-import com.cqut.livechat.dto.message.AddFriendMessageDto;
-import com.cqut.livechat.dto.message.ChatImageMessageDto;
-import com.cqut.livechat.dto.message.ChatTextMessageDto;
-import com.cqut.livechat.dto.message.CommonMessageDto;
+import com.cqut.livechat.dto.message.*;
 
 import java.util.List;
 
@@ -26,19 +23,19 @@ public interface MessageService {
      * @param messageDto 文本消息
      * @return 发送状态信息
      */
-    String sendTextMessage(ChatTextMessageDto messageDto);
+    MessageSendStatusDto sendTextMessage(ChatTextMessageDto messageDto);
 
     /**
      * 发送图片消息
      * @param messageDto 图片消息
      * @return 发送状态信息
      */
-    String sendImageMessage(ChatImageMessageDto messageDto);
+    MessageSendStatusDto sendImageMessage(ChatImageMessageDto messageDto);
 
     /**
      * 发送添加朋友消息
      * @param messageDto 消息
      * @return 发送状态信息
      */
-    String sendAddFriendMessage(AddFriendMessageDto messageDto);
+    MessageSendStatusDto sendAddFriendMessage(AddFriendMessageDto messageDto);
 }

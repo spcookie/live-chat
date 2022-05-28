@@ -1,6 +1,8 @@
 package com.cqut.livechat.service.message;
 
+import com.cqut.livechat.constant.SendStatus;
 import com.cqut.livechat.constant.UserStatus;
+import com.cqut.livechat.dto.message.MessageSendStatusDto;
 import com.cqut.livechat.entity.message.CommonMessage;
 import com.cqut.livechat.repository.friends.FriendRepository;
 import com.cqut.livechat.service.BaseService;
@@ -40,17 +42,17 @@ public abstract class AbstractCommonMessageHandler<T extends CommonMessage> exte
     protected abstract T saveMessage(T message);
 
     @Override
-    public String handler(T message) {
+    public MessageSendStatusDto handler(T message) {
         // 获取消息接受者
         Long target = message.getTarget();
         if (!super.userIsExist(target)) {
-            return "用户不存在";
+            return new MessageSendStatusDto(SendStatus.USER_NOT_EXIST, "用户不存在");
         }
         if (this.onlyFriend()) {
             // 校验消息接收者是否是好友
             boolean isLegal = super.verifyIsFriend(target);
             if (!isLegal) {
-                return "消息发送非法, 已取消发送";
+                return new MessageSendStatusDto(SendStatus.ILLEGAL_SEND, "消息发送非法, 已取消发送");
             }
         }
         // 填充公共字段
@@ -58,7 +60,7 @@ public abstract class AbstractCommonMessageHandler<T extends CommonMessage> exte
         // 判断是否能重复发送
         if (!this.canRepeatSend()) {
             if (this.isRepeatSend(message)) {
-               return "消息不能重复发送";
+                return new MessageSendStatusDto(SendStatus.NOT_REPEAT_SEND, "消息不能重复发送");
             }
         }
         // 持久保存消息
@@ -74,9 +76,9 @@ public abstract class AbstractCommonMessageHandler<T extends CommonMessage> exte
                 // 发送消息
                 boolean b = this.sendTargetMessage(targetSession, save);
             }
-            return  "消息发送成功";
+            return new MessageSendStatusDto(SendStatus.SEND_SUCCESS, "消息发送成功");
         } else {
-            return  "消息发送失败";
+            return new MessageSendStatusDto(SendStatus.SEND_FAIL, "消息发送失败");
         }
     }
 

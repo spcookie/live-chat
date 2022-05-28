@@ -1,10 +1,7 @@
 package com.cqut.livechat.service.message.impl;
 
 import com.cqut.livechat.constant.MessageType;
-import com.cqut.livechat.dto.message.AddFriendMessageDto;
-import com.cqut.livechat.dto.message.ChatImageMessageDto;
-import com.cqut.livechat.dto.message.ChatTextMessageDto;
-import com.cqut.livechat.dto.message.CommonMessageDto;
+import com.cqut.livechat.dto.message.*;
 import com.cqut.livechat.entity.message.AddFriendMessage;
 import com.cqut.livechat.entity.message.ChatImageMessage;
 import com.cqut.livechat.entity.message.ChatTextMessage;
@@ -84,7 +81,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     }
 
     @Override
-    public String sendTextMessage(ChatTextMessageDto messageDto) {
+    public MessageSendStatusDto sendTextMessage(ChatTextMessageDto messageDto) {
         ChatTextMessage message = new ChatTextMessage();
         message.setTarget(messageDto.getTarget());
         message.setText(messageDto.getText());
@@ -92,7 +89,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     }
 
     @Override
-    public String sendImageMessage(ChatImageMessageDto messageDto) {
+    public MessageSendStatusDto sendImageMessage(ChatImageMessageDto messageDto) {
         ChatImageMessage message = new ChatImageMessage();
         message.setTarget(messageDto.getTarget());
         message.setImageBase64(message.getImageBase64());
@@ -100,7 +97,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     }
 
     @Override
-    public String sendAddFriendMessage(AddFriendMessageDto messageDto) {
+    public MessageSendStatusDto sendAddFriendMessage(AddFriendMessageDto messageDto) {
         AddFriendMessage message = new AddFriendMessage();
         message.setTarget(messageDto.getTarget());
         return addFriendMessageService.handler(message);

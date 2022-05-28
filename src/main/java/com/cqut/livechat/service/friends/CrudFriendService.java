@@ -1,5 +1,6 @@
 package com.cqut.livechat.service.friends;
 
+import com.cqut.livechat.dto.message.AddFriendMessageDto;
 import com.cqut.livechat.dto.user.AccountDto;
 
 import java.util.List;
@@ -24,10 +25,11 @@ public interface CrudFriendService {
 
     /**
      *  添加一个好友
-     * @param id 好友id
+     * @param id 好友验证消息id
+     * @param handle 接受or拒绝
      * @return 添加是否成功
      */
-    boolean addFriendById(long id);
+    boolean addFriendById(long id, boolean handle);
 
     /**
      *  根据提供的样例查找好友
@@ -35,4 +37,10 @@ public interface CrudFriendService {
      * @return 查找到的用户
      */
     AccountDto findOneFriend(AccountDto user);
+
+    /**
+     * 获取所有待处理的添加好友请求
+     * @return 好友请求
+     */
+    List<AddFriendMessageDto> getAllFriendVerifyMessage();
 }

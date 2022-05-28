@@ -41,7 +41,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
                 .build();
         // 转换json
         ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(request);
+        String json = mapper.writeValueAsString(result);
         // 返回结果
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().print(json);

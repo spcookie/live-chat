@@ -1,5 +1,6 @@
 package com.cqut.livechat.dto.message;
 
+import com.cqut.livechat.constant.MessageStatus;
 import com.cqut.livechat.entity.message.AddFriendMessage;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,5 +14,5 @@ import lombok.ToString;
 @Setter
 @ToString(callSuper = true)
 public class AddFriendMessageDto extends CommonMessageDto {
-    private AddFriendMessage.Status status = AddFriendMessage.Status.PENDING;
+    private MessageStatus status = MessageStatus.PENDING;
 }

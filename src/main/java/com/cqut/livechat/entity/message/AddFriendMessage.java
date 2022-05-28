@@ -1,5 +1,6 @@
 package com.cqut.livechat.entity.message;
 
+import com.cqut.livechat.constant.MessageStatus;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -24,23 +25,7 @@ import java.util.Objects;
 public class AddFriendMessage extends CommonMessage {
 
     @Column(name = "chat_status")
-    private Status status = Status.PENDING;
-
-    public enum Status {
-        /**
-         * 待处理
-         */
-        PENDING,
-        /**
-         * 接受
-         */
-        ACCEPT,
-        /**
-         * 拒绝
-         */
-        REJECT,
-        ;
-    }
+    private MessageStatus status = MessageStatus.PENDING;
 
     @Override
     public boolean equals(Object o) {

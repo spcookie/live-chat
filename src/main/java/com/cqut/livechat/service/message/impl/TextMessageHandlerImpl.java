@@ -51,7 +51,6 @@ public class TextMessageHandlerImpl extends AbstractCommonMessageHandler<ChatTex
     @Override
     protected ChatTextMessage saveMessage(ChatTextMessage message) {
         // 消息类型转换
-        populatePublicFields(message);
         log.info(message.toString());
         // 持久化消息
         return chatTextMessageRepository.save(message);

@@ -50,8 +50,6 @@ public class ImageMessageHandlerImpl extends AbstractCommonMessageHandler<ChatIm
 
     @Override
     protected ChatImageMessage saveMessage(ChatImageMessage message) {
-        // 填充公共字段
-        super.populatePublicFields(message);
         // 持久化消息
         return imageMessageRepository.save(message);
     }

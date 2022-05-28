@@ -46,11 +46,19 @@ public abstract class AbstractCommonMessageHandler<T extends CommonMessage> exte
         if (!super.userIsExist(target)) {
             return "用户不存在";
         }
-        if (this.isVerifyRequire()) {
-            // 校验消息接收者是否合法
+        if (this.onlyFriend()) {
+            // 校验消息接收者是否是好友
             boolean isLegal = super.verifyIsFriend(target);
             if (!isLegal) {
                 return "消息发送非法, 已取消发送";
+            }
+        }
+        // 填充公共字段
+        this.populatePublicFields(message);
+        // 判断是否能重复发送
+        if (!this.canRepeatSend()) {
+            if (this.isRepeatSend(message)) {
+               return "消息不能重复发送";
             }
         }
         // 持久保存消息
@@ -72,12 +80,20 @@ public abstract class AbstractCommonMessageHandler<T extends CommonMessage> exte
         }
     }
 
-    protected void populatePublicFields(CommonMessage message) {
+    private void populatePublicFields(CommonMessage message) {
         message.setFrom(super.getLoginUserId());
         message.setDate(new Date());
     }
 
-    protected boolean isVerifyRequire() {
+    protected boolean onlyFriend() {
+        return true;
+    }
+
+    protected boolean canRepeatSend() {
+        return true;
+    }
+
+    protected boolean isRepeatSend(T message) {
         return true;
     }
 }

@@ -8,6 +8,7 @@ import com.cqut.livechat.service.message.AbstractCommonMessageHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.TextMessage;
@@ -47,12 +48,25 @@ public class AddFriendMessageHandlerImpl extends AbstractCommonMessageHandler<Ad
 
     @Override
     protected AddFriendMessage saveMessage(AddFriendMessage message) {
-        super.populatePublicFields(message);
         return addFriendMessageRepository.save(message);
     }
 
     @Override
-    protected boolean isVerifyRequire() {
+    protected boolean onlyFriend() {
         return false;
+    }
+
+    @Override
+    protected boolean canRepeatSend() {
+        return false;
+    }
+
+    @Override
+    protected boolean isRepeatSend(AddFriendMessage message) {
+        // 判断是否存在该条未处理的好友请求
+        AddFriendMessage exampleMessage = new AddFriendMessage();
+        exampleMessage.setFrom(message.getFrom());
+        exampleMessage.setTarget(message.getTarget());
+        return addFriendMessageRepository.exists(Example.of(exampleMessage));
     }
 }

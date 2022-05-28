@@ -1,6 +1,5 @@
 package com.cqut.livechat.dto.common;
 
-import com.alibaba.fastjson2.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
@@ -31,7 +30,6 @@ public enum ResultCode {
         this.val = val;
     }
 
-    @JSONField(name = "code")
     @JsonValue
     public Integer getVal() {
         return val;

@@ -1,8 +1,9 @@
 package com.cqut.livechat.service.auth;
 
-import com.alibaba.fastjson.JSON;
+import cn.hutool.json.JSON;
 import com.cqut.livechat.dto.common.Result;
 import com.cqut.livechat.dto.common.ResultCode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,8 @@ public class NoAuthenticatedHandler implements AuthenticationEntryPoint {
                 .code(ResultCode.NO_PERMISSION)
                 .message("拒绝访问, 请登录")
                 .build();
-        String json = JSON.toJSONString(result);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(result);
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(json);
     }

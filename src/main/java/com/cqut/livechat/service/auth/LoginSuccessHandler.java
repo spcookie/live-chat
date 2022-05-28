@@ -1,11 +1,12 @@
 package com.cqut.livechat.service.auth;
 
-import com.alibaba.fastjson.JSON;
+import cn.hutool.json.JSON;
 import com.cqut.livechat.dto.common.Result;
 import com.cqut.livechat.dto.common.ResultCode;
 import com.cqut.livechat.entity.auth.User;
 import com.cqut.livechat.redis.auth.UserRedisUtil;
 import com.cqut.livechat.utils.TokenUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
                 .data(token)
                 .build();
         // 转换json
-        String json = JSON.toJSONString(result);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(request);
         // 返回结果
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().print(json);

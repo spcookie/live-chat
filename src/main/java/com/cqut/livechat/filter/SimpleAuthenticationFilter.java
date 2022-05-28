@@ -1,6 +1,7 @@
 package com.cqut.livechat.filter;
 
-import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,6 +20,7 @@ import java.io.IOException;
 public class SimpleAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     private static final String PROCESSES_URL = "/auth/login";
+    private static final String METHOD = "POST";
 
     public SimpleAuthenticationFilter(AuthenticationManager authenticationManager) {
         super(PROCESSES_URL, authenticationManager);
@@ -26,13 +28,14 @@ public class SimpleAuthenticationFilter extends AbstractAuthenticationProcessing
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
-        if ("POST".equals(request.getMethod())) {
+        if (METHOD.equals(request.getMethod())) {
             // 获取请求的body
             String body = this.getBody(request);
-            JSONObject jsonBody = JSONObject.parseObject(body);
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode tree = mapper.readTree(body);
             // 获取账号和密码
-            String username = jsonBody.getString("username");
-            String password = jsonBody.getString("password");
+            String username = tree.get("username").asText();
+            String password = tree.get("password").asText();
             // 创建验证信息
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
             // 开始校验

@@ -17,7 +17,7 @@ import java.util.Date;
  * @date 2022/5/23
  */
 @Slf4j
-public abstract class AbstractCommonMessageService extends BaseService implements CommonMessageService {
+public abstract class AbstractCommonMessageHandler<T extends CommonMessage> extends BaseService implements CommonMessageHandler<T> {
 
     @Autowired
     protected UserStatusService userStatusService;
@@ -30,17 +30,17 @@ public abstract class AbstractCommonMessageService extends BaseService implement
      * @param message 发送的消息
      * @return 发送状态
      */
-    protected abstract boolean sendTargetMessage(WebSocketSession session, CommonMessage message);
+    protected abstract boolean sendTargetMessage(WebSocketSession session, T message);
 
     /**
      *  持久化消息
      * @param message 消息
      * @return 是否成功
      */
-    protected abstract CommonMessage saveMessage(CommonMessage message);
+    protected abstract T saveMessage(T message);
 
     @Override
-    public String handler(CommonMessage message) {
+    public String handler(T message) {
         // 获取消息接受者
         Long target = message.getTarget();
         if (!super.userIsExist(target)) {
@@ -54,8 +54,7 @@ public abstract class AbstractCommonMessageService extends BaseService implement
             }
         }
         // 持久保存消息
-        CommonMessage save = this.saveMessage(message);
-        String result;
+        T save = this.saveMessage(message);
         if (save.getId() != null) {
             log.info("消息保存成功 -> " + save);
             // 获取接收者登录状态

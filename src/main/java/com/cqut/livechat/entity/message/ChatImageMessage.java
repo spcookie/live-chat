@@ -1,6 +1,5 @@
 package com.cqut.livechat.entity.message;
 
-import com.alibaba.fastjson2.annotation.JSONField;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -29,7 +28,6 @@ public class ChatImageMessage extends CommonMessage {
     @Transient
     private String imageBase64;
     @Column(name = "chat_image", columnDefinition = "mediumblob", nullable = false)
-    @JSONField(deserialize = false, serialize = false)
     private byte[] image;
 
     public byte[] getImage() {

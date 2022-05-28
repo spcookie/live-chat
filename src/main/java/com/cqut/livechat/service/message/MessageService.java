@@ -1,7 +1,8 @@
 package com.cqut.livechat.service.message;
 
-import com.cqut.livechat.dto.message.CommonMessageDto;
-import com.cqut.livechat.dto.message.MessageWithTypeDto;
+import com.cqut.livechat.dto.message.*;
+import com.cqut.livechat.entity.message.ChatImageMessage;
+import com.cqut.livechat.entity.message.ChatTextMessage;
 import com.cqut.livechat.entity.message.CommonMessage;
 
 import java.util.List;
@@ -21,10 +22,23 @@ public interface MessageService {
     List<CommonMessageDto> getSimpleMessage(long id, int page, int size);
 
     /**
-     * 发送消息通用方法
-     * 根据消息类型选择对应消息处理器处理消息
-     * @param messageWithType 带消息类型的消息
+     * 发送文本消息
+     * @param messageDto 文本消息
      * @return 发送状态信息
      */
-    String sendMessage(MessageWithTypeDto<CommonMessage> messageWithType);
+    String sendTextMessage(ChatTextMessageDto messageDto);
+
+    /**
+     * 发送图片消息
+     * @param messageDto 图片消息
+     * @return 发送状态信息
+     */
+    String sendImageMessage(ChatImageMessageDto messageDto);
+
+    /**
+     * 发送添加朋友消息
+     * @param messageDto 消息
+     * @return 发送状态信息
+     */
+    String sendAddFriendMessage(AddFriendMessageDto messageDto);
 }

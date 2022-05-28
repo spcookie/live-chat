@@ -1,26 +1,25 @@
 package com.cqut.livechat.service.message.impl;
 
 import com.cqut.livechat.constant.MessageType;
+import com.cqut.livechat.dto.message.AddFriendMessageDto;
 import com.cqut.livechat.dto.message.ChatImageMessageDto;
 import com.cqut.livechat.dto.message.ChatTextMessageDto;
 import com.cqut.livechat.dto.message.CommonMessageDto;
-import com.cqut.livechat.dto.message.MessageWithTypeDto;
+import com.cqut.livechat.entity.message.AddFriendMessage;
 import com.cqut.livechat.entity.message.ChatImageMessage;
 import com.cqut.livechat.entity.message.ChatTextMessage;
 import com.cqut.livechat.entity.message.CommonMessage;
 import com.cqut.livechat.repository.message.CommonMessageRepository;
 import com.cqut.livechat.service.BaseService;
-import com.cqut.livechat.service.message.CommonMessageService;
-import com.cqut.livechat.service.message.MessageHandlerAdapter;
+import com.cqut.livechat.service.message.CommonMessageHandler;
 import com.cqut.livechat.service.message.MessageService;
-import com.cqut.livechat.socket.ChatSocketCache;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.socket.WebSocketSession;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +34,13 @@ import java.util.List;
 public class MessageServiceImpl extends BaseService implements MessageService {
 
     @Autowired
-    private MessageHandlerAdapter messageHandlerAdapter;
-    @Autowired
     private CommonMessageRepository commonMessageRepository;
+    @Autowired
+    private CommonMessageHandler<ChatTextMessage> textMessageService;
+    @Autowired
+    private CommonMessageHandler<ChatImageMessage> imageMessageService;
+    @Autowired
+    private CommonMessageHandler<AddFriendMessage> addFriendMessageService;
 
     @Override
     public List<CommonMessageDto> getSimpleMessage(long id, int page, int size) {
@@ -58,8 +61,9 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             if (message instanceof ChatTextMessage) {
                 // 如果是文本消息
                 ChatTextMessage m = (ChatTextMessage) message;
-                ChatTextMessageDto textMessageDto = ChatTextMessageDto.builder().text(m.getText()).build();
+                ChatTextMessageDto textMessageDto = new ChatTextMessageDto();
                 textMessageDto.setType(MessageType.TEXT);
+                textMessageDto.setText(m.getText());
                 textMessageDto.setId(m.getId());
                 textMessageDto.setFrom(m.getFrom());
                 textMessageDto.setTarget(m.getTarget());
@@ -81,12 +85,25 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     }
 
     @Override
-    public String sendMessage(MessageWithTypeDto<CommonMessage> messageWithType) {
-        MessageType type = messageWithType.getType();
-        CommonMessage message = messageWithType.getMessage();
-        CommonMessageService service = messageHandlerAdapter.adaptation(type);
-        Long loginUserId = getLoginUserId();
-        WebSocketSession session = ChatSocketCache.get(loginUserId);
-        return service.handler(message);
+    public String sendTextMessage(ChatTextMessageDto messageDto) {
+        ChatTextMessage message = new ChatTextMessage();
+        message.setTarget(messageDto.getTarget());
+        message.setText(messageDto.getText());
+        return textMessageService.handler(message);
+    }
+
+    @Override
+    public String sendImageMessage(ChatImageMessageDto messageDto) {
+        ChatImageMessage message = new ChatImageMessage();
+        message.setTarget(messageDto.getTarget());
+        message.setImageBase64(message.getImageBase64());
+        return imageMessageService.handler(message);
+    }
+
+    @Override
+    public String sendAddFriendMessage(AddFriendMessageDto messageDto) {
+        AddFriendMessage message = new AddFriendMessage();
+        message.setTarget(messageDto.getTarget());
+        return addFriendMessageService.handler(message);
     }
 }

@@ -12,7 +12,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
-@Builder
 public class ChatTextMessageDto extends CommonMessageDto {
     private String text;
 }

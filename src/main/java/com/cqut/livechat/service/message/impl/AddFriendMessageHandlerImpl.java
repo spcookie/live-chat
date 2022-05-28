@@ -1,14 +1,11 @@
 package com.cqut.livechat.service.message.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.cqut.livechat.MessageTypeException;
 import com.cqut.livechat.constant.MessageType;
 import com.cqut.livechat.dto.message.AddFriendMessageDto;
 import com.cqut.livechat.entity.message.AddFriendMessage;
-import com.cqut.livechat.entity.message.ChatTextMessage;
-import com.cqut.livechat.entity.message.CommonMessage;
 import com.cqut.livechat.repository.message.AddFriendMessageRepository;
-import com.cqut.livechat.service.message.AbstractCommonMessageService;
+import com.cqut.livechat.service.message.AbstractCommonMessageHandler;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,20 +22,22 @@ import java.io.IOException;
 @Service
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
-public class AddFriendMessageServiceImpl extends AbstractCommonMessageService {
+public class AddFriendMessageHandlerImpl extends AbstractCommonMessageHandler<AddFriendMessage> {
 
     @Autowired
     private AddFriendMessageRepository addFriendMessageRepository;
 
     @Override
-    protected boolean sendTargetMessage(WebSocketSession session, CommonMessage message) {
+    protected boolean sendTargetMessage(WebSocketSession session, AddFriendMessage message) {
         AddFriendMessageDto dto = new AddFriendMessageDto();
         // 返回id和类型
         dto.setId(message.getId());
         dto.setType(MessageType.ADD_FRIEND);
-        String json = JSON.toJSONString(dto);
         try {
-            session.sendMessage(new TextMessage(json));
+            ObjectMapper mapper = new ObjectMapper();
+            String value = mapper.writeValueAsString(dto);
+            //发送
+            session.sendMessage(new TextMessage(value));
             return true;
         } catch (IOException e) {
             log.error(e.getLocalizedMessage());
@@ -47,26 +46,13 @@ public class AddFriendMessageServiceImpl extends AbstractCommonMessageService {
     }
 
     @Override
-    protected CommonMessage saveMessage(CommonMessage message) {
+    protected AddFriendMessage saveMessage(AddFriendMessage message) {
         super.populatePublicFields(message);
-        AddFriendMessage addFriendMessage = this.castType(message);
-        return addFriendMessageRepository.save(addFriendMessage);
-    }
-
-    @Override
-    public boolean support(MessageType type) {
-        return type.equals(MessageType.ADD_FRIEND);
+        return addFriendMessageRepository.save(message);
     }
 
     @Override
     protected boolean isVerifyRequire() {
         return false;
-    }
-
-    private AddFriendMessage castType(CommonMessage message) {
-        if (!(message instanceof AddFriendMessage)) {
-            throw new MessageTypeException("common message cannot be converted to add friend message");
-        }
-        return (AddFriendMessage) message;
     }
 }

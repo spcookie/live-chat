@@ -1,10 +1,11 @@
 package com.cqut.livechat.service.auth;
 
-import com.alibaba.fastjson2.JSON;
+import cn.hutool.json.JSON;
 import com.cqut.livechat.dto.common.Result;
 import com.cqut.livechat.dto.common.ResultCode;
 import com.cqut.livechat.entity.auth.User;
 import com.cqut.livechat.redis.auth.UserRedisUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,8 @@ public class LogoutHandler implements LogoutSuccessHandler {
                 .code(ResultCode.OK)
                 .message("退出登录成功")
                 .build();
-        String json = JSON.toJSONString(result);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(request);
         response.getWriter().print(json);
     }
 }

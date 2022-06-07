@@ -2,6 +2,7 @@ package com.cqut.livechat.entity.friends;
 
 import com.cqut.livechat.entity.BaseEntity;
 import com.cqut.livechat.entity.auth.User;
+import com.cqut.livechat.entity.user.Account;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -28,10 +29,10 @@ public class FriendShip extends BaseEntity {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "chat_user_id")
-    private User user;
+    private Account user;
     @ManyToOne(optional = false)
     @JoinColumn(name = "chat_friend_id")
-    private User friend;
+    private Account friend;
 
     @Override
     public boolean equals(Object o) {

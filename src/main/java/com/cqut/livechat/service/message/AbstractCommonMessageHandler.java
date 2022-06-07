@@ -44,7 +44,7 @@ public abstract class AbstractCommonMessageHandler<T extends CommonMessage> exte
     @Override
     public MessageSendStatusDto handler(T message) {
         // 获取消息接受者
-        Long target = message.getTarget();
+        Long target = message.getTarget().getId();
         if (!super.userIsExist(target)) {
             return new MessageSendStatusDto(SendStatus.USER_NOT_EXIST, "用户不存在");
         }
@@ -60,7 +60,7 @@ public abstract class AbstractCommonMessageHandler<T extends CommonMessage> exte
         // 判断是否能重复发送
         if (!this.canRepeatSend()) {
             if (this.isRepeatSend(message)) {
-                return new MessageSendStatusDto(SendStatus.NOT_REPEAT_SEND, "消息不能重复发送");
+                return new MessageSendStatusDto(SendStatus.NOT_REPEAT_SEND, "消息通知不能重复发送");
             }
         }
         // 持久保存消息
@@ -83,7 +83,7 @@ public abstract class AbstractCommonMessageHandler<T extends CommonMessage> exte
     }
 
     private void populatePublicFields(CommonMessage message) {
-        message.setFrom(super.getLoginUserId());
+        message.setFrom(super.getLoginUser().getAccount());
         message.setDate(new Date());
     }
 

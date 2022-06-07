@@ -1,5 +1,6 @@
 package com.cqut.livechat.entity.message;
 
+import com.cqut.livechat.constant.MessageStatus;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -23,8 +24,10 @@ import java.util.Objects;
 @Table(name = "chat_text_message")
 public class ChatTextMessage extends CommonMessage {
 
-    @Column(name = "chat_text", nullable = false)
+    @Column(name = "chat_text", nullable = false, columnDefinition = "text")
     private String text;
+    @Column(name = "chat_status", nullable = false)
+    private MessageStatus messageStatus = MessageStatus.UNREAD;
 
     @Override
     public boolean equals(Object o) {

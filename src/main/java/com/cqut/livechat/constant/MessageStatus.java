@@ -17,5 +17,13 @@ public enum MessageStatus {
      * 拒绝
      */
     REJECT,
+    /**
+     * 已读
+     */
+    READ,
+    /**
+     * 未读
+     */
+    UNREAD,
     ;
 }

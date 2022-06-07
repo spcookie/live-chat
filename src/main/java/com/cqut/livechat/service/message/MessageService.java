@@ -1,8 +1,10 @@
 package com.cqut.livechat.service.message;
 
 import com.cqut.livechat.dto.message.*;
+import com.cqut.livechat.entity.message.AddFriendMessage;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Augenstern
@@ -38,4 +40,17 @@ public interface MessageService {
      * @return 发送状态信息
      */
     MessageSendStatusDto sendAddFriendMessage(AddFriendMessageDto messageDto);
+
+    /**
+     * 查询未读的好友消息
+     * @return 未读数量
+     */
+    Map<Long, Integer> getAllUnreadCount();
+
+    /**
+     * 用户确认消息已读
+     * @param id 好友id
+     * @return 修改消息状态是否成功
+     */
+    boolean confirmationMessage(long id);
 }

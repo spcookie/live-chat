@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 public class SimpleAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    private static final String PROCESSES_URL = "/auth/login";
+    private static final String PROCESSES_URL = "/api/auth/login";
     private static final String METHOD = "POST";
 
     public SimpleAuthenticationFilter(AuthenticationManager authenticationManager) {

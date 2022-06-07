@@ -14,6 +14,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author Augenstern
@@ -30,7 +31,7 @@ public class ImageMessageHandlerImpl extends AbstractCommonMessageHandler<ChatIm
     @Override
     protected boolean sendTargetMessage(WebSocketSession session, ChatImageMessage message) {
         // 将byte转换为Base64
-        String imageBase64 = new String(message.getImage());
+        String imageBase64 = new String(message.getImage(), StandardCharsets.UTF_8);
         ChatImageMessageDto messageDto = ChatImageMessageDto.builder().imageBase64(imageBase64).build();
         messageDto.setType(MessageType.IMAGE);
         messageDto.setId(message.getId());

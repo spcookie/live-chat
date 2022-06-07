@@ -28,7 +28,7 @@ import java.util.Set;
 @ToString(callSuper = true)
 @Entity
 @Table(name = "chat_user")
-public class User extends BaseEntity implements UserDetails, Serializable {
+public class User extends BaseEntity implements UserDetails {
 
     @Column(name = "chat_user_name", length = 11, unique = true, nullable = false)
     private String username;

@@ -70,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         // 添加直接放行的url
-        web.ignoring().antMatchers("/error", "/actuator");
+        web.ignoring().antMatchers("/error", "/actuator", "/socket/**");
     }
 
     @Override
@@ -92,7 +92,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 禁用session
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
         // 退出登录
-        http.logout().logoutUrl("/logout").clearAuthentication(true).logoutSuccessHandler(logoutSuccessHandler);
+        http.logout().logoutUrl("/api/logout").clearAuthentication(true).logoutSuccessHandler(logoutSuccessHandler);
         // 添加未认证处理器
         http.exceptionHandling().authenticationEntryPoint(entryPoint);
         // 添加无权限拒绝访问处理器

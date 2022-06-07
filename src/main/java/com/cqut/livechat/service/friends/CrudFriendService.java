@@ -32,14 +32,14 @@ public interface CrudFriendService {
     boolean addFriendById(long id, boolean handle);
 
     /**
-     *  根据提供的样例查找好友
+     *  根据提供的样例查找非好友用户
      * @param user 样例
      * @return 查找到的用户
      */
-    AccountDto findOneFriend(AccountDto user);
+    List<AccountDto> findAllNotFriend(AccountDto user);
 
     /**
-     * 获取所有待处理的添加好友请求
+     * 获取所有添加好友请求
      * @return 好友请求
      */
     List<AddFriendMessageDto> getAllFriendVerifyMessage();

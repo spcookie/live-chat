@@ -2,7 +2,10 @@ package com.cqut.livechat.service.auth;
 
 import com.cqut.livechat.dto.common.Result;
 import com.cqut.livechat.dto.common.ResultCode;
+import com.cqut.livechat.dto.user.AccountDto;
+import com.cqut.livechat.dto.user.TokenAndUserDto;
 import com.cqut.livechat.entity.auth.User;
+import com.cqut.livechat.entity.user.Account;
 import com.cqut.livechat.redis.auth.UserRedisUtil;
 import com.cqut.livechat.utils.TokenUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,6 +29,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         // 获取验证成功后的User对象
         User user = (User) authentication.getPrincipal();
+        // 清除用于验证的密码信息
+        user.setPassword(null);
         Long id = user.getId();
         // 生成携带id的Token
         String token = TokenUtil.generateTokenWithId(id);
@@ -33,11 +38,10 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         // 保存临时User对象到Redis
         UserRedisUtil.saveUser(id, user, exp);
         // 封装结果
-        Result<String> result = Result.<String>builder()
-                .code(ResultCode.OK)
-                .message("登录成功")
-                .data(token)
-                .build();
+        TokenAndUserDto tokenAndUserDto = new TokenAndUserDto();
+        tokenAndUserDto.setToken(token);
+        tokenAndUserDto.setUser(user);
+        Result<TokenAndUserDto> result = Result.success("登录成功", tokenAndUserDto);
         // 转换json
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(result);

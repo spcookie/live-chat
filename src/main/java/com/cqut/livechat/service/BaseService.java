@@ -2,6 +2,7 @@ package com.cqut.livechat.service;
 
 import com.cqut.livechat.entity.auth.User;
 import com.cqut.livechat.entity.friends.FriendShip;
+import com.cqut.livechat.entity.user.Account;
 import com.cqut.livechat.repository.friends.FriendRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -43,15 +44,20 @@ public class BaseService {
         return ObjectUtils.isEmpty(loginUser) ? null : loginUser.getId();
     }
 
+    //TODO: 做缓存处理
     /**
      * 校验是否是好友关系
      * @param id 好友id
      * @return 是否是好友关系
      */
     public boolean verifyIsFriend(long id) {
-        User user = getLoginUser();
+        Account account = getLoginUser().getAccount();
+        // 与自己不是好友关系
+        if (id == account.getId()) {
+            return false;
+        }
         // 获取用户的好友关系
-        List<FriendShip> friendShip = friendRepository.findFriendShip(user);
+        List<FriendShip> friendShip = friendRepository.findFriendShip(account);
         // 查找是否该用户与目标用户是否是好友关系
         for (FriendShip ship : friendShip) {
             if (!Objects.equals(ship.getUser().getId(), id)) {

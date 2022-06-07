@@ -1,6 +1,8 @@
 package com.cqut.livechat.repository.message;
 
+import com.cqut.livechat.entity.auth.User;
 import com.cqut.livechat.entity.message.CommonMessage;
+import com.cqut.livechat.entity.user.Account;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,5 +26,5 @@ public interface CommonMessageRepository extends JpaRepository<CommonMessage, Lo
      * @return 消息列表
      */
     @Query("from CommonMessage m where (m.from = ?1 and m.target = ?2) or (m.from = ?2 and m.target = ?1)")
-    List<CommonMessage> findAllByFromIsAndTargetIs(long from, long target, Sort sort, PageRequest pageRequest);
+    List<CommonMessage> findAllByFromIsAndTargetIs(Account from, Account target, Sort sort, PageRequest pageRequest);
 }

@@ -36,7 +36,7 @@ public class FriendController {
     }
 
     @PutMapping("/{id}/{handle}")
-    public Result<Boolean> addFriend(@PathVariable("id") @Min(1) long id, @PathVariable("handle") boolean handle) {
+    public Result<Boolean> handleFriend(@PathVariable("id") @Min(1) long id, @PathVariable("handle") boolean handle) {
         boolean b = crudFriendService.addFriendById(id, handle);
         if (b) {
             return Result.success("处理成功", null);
@@ -56,8 +56,8 @@ public class FriendController {
     }
 
     @PostMapping("/find")
-    public Result<AccountDto> findFriend(@RequestBody @Validated AccountDto accountDto) {
-        AccountDto friend = crudFriendService.findOneFriend(accountDto);
+    public Result<List<AccountDto>> findFriend(@RequestBody @Validated(value = AccountDto.Group.Find.class) AccountDto accountDto) {
+        List<AccountDto> friend = crudFriendService.findAllNotFriend(accountDto);
         return Result.success("查找成功", friend);
     }
 }

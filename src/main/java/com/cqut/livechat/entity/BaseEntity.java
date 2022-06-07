@@ -1,5 +1,7 @@
 package com.cqut.livechat.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -28,19 +30,23 @@ public class BaseEntity {
 
     @CreatedBy
     @Column(name = "created_by")
+    @JsonIgnore
     private String createdBy;
 
     @CreatedDate
     @Temporal(TemporalType.DATE)
     @Column(name = "created_date")
+    @JsonIgnore
     private Date createdDate;
 
     @LastModifiedBy
     @Column(name = "last_modified_by")
+    @JsonIgnore
     private String lastModifiedBy;
 
     @LastModifiedDate
     @Temporal(TemporalType.DATE)
     @Column(name = "last_modified_date")
+    @JsonIgnore
     private Date lastModifiedDate;
 }

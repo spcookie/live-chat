@@ -25,7 +25,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
                 .message("登录失败 " + exception.getLocalizedMessage())
                 .build();
         ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(request);
+        String json = mapper.writeValueAsString(result);
         response.setContentType("application/json;charset=utf-8");
         response.getWriter().print(json);
     }

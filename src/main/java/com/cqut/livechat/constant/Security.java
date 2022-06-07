@@ -17,6 +17,10 @@ public enum Security {
      * 角色前缀
      */
     ROLE_PREFIX("ROLE_"),
+    /**
+     * WebSocket子协议(用于鉴权)
+     */
+    SEC_WEBSOCKET_PROTOCOL("Sec-WebSocket-Protocol")
     ;
 
     private final String VAL;

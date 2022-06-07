@@ -1,6 +1,8 @@
 package com.cqut.livechat.dto.message;
 
 import com.cqut.livechat.constant.MessageType;
+import com.cqut.livechat.entity.auth.User;
+import com.cqut.livechat.entity.user.Account;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +21,7 @@ import java.util.Date;
 public class CommonMessageDto {
     private MessageType type;
     private Long id;
-    private Long from;
-    private Long target;
+    private Account from;
+    private Account target;
     private Date date;
 }

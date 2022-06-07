@@ -22,6 +22,10 @@ public enum MessageType {
      * 图片
      */
     IMAGE(ChatImageMessage.class),
+    /**
+     * 接受好友请求消息
+     */
+    ACCEPT_ADD_FRIEND(CommonMessage.class)
     ;
 
     private final Class<? extends CommonMessage> type;

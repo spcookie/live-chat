@@ -6,6 +6,9 @@ import com.cqut.livechat.entity.message.AddFriendMessage;
 import com.cqut.livechat.entity.message.ChatImageMessage;
 import com.cqut.livechat.entity.message.ChatTextMessage;
 import com.cqut.livechat.entity.message.CommonMessage;
+import com.cqut.livechat.entity.user.Account;
+import com.cqut.livechat.repository.message.AddFriendMessageRepository;
+import com.cqut.livechat.repository.message.ChatTextMessageRepository;
 import com.cqut.livechat.repository.message.CommonMessageRepository;
 import com.cqut.livechat.service.BaseService;
 import com.cqut.livechat.service.message.CommonMessageHandler;
@@ -18,7 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Augenstern
@@ -31,6 +36,10 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
     @Autowired
     private CommonMessageRepository commonMessageRepository;
+    @Autowired
+    private ChatTextMessageRepository chatTextMessageRepository;
+    @Autowired
+    private AddFriendMessageRepository addFriendMessageRepository;
     @Autowired
     private CommonMessageHandler<ChatTextMessage> textMessageService;
     @Autowired
@@ -45,12 +54,14 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             return null;
         }
         // 消息按创建时间升序排列
-        Sort sort = Sort.sort(CommonMessage.class).by(CommonMessage::getDate).ascending();
+        Sort sort = Sort.sort(CommonMessage.class).by(CommonMessage::getDate).descending();
         // 分页条件
         PageRequest pageRequest = PageRequest.of(page, size);
-        Long loginUserId = super.getLoginUserId();
+        Account loginAccount = super.getLoginUser().getAccount();
         // 查询消息公共信息
-        Iterable<CommonMessage> commonMessages = commonMessageRepository.findAllByFromIsAndTargetIs(loginUserId, id, sort, pageRequest);
+        Account targetAccount = new Account();
+        targetAccount.setId(id);
+        Iterable<CommonMessage> commonMessages = commonMessageRepository.findAllByFromIsAndTargetIs(loginAccount, targetAccount, sort, pageRequest);
         List<CommonMessageDto> commonMessageDtoList = new ArrayList<>();
         // 将消息转换为对应的dto
         commonMessages.forEach(message -> {
@@ -62,17 +73,15 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                 textMessageDto.setText(m.getText());
                 textMessageDto.setId(m.getId());
                 textMessageDto.setFrom(m.getFrom());
-                textMessageDto.setTarget(m.getTarget());
                 textMessageDto.setDate(m.getDate());
                 commonMessageDtoList.add(textMessageDto);
             } else if (message instanceof  ChatImageMessage) {
                 // 如果是图片消息
                 ChatImageMessage m = (ChatImageMessage) message;
-                ChatImageMessageDto imageMessageDto = ChatImageMessageDto.builder().image(m.getImage()).build();
+                ChatImageMessageDto imageMessageDto = ChatImageMessageDto.builder().imageBase64(m.getImageBase64()).build();
                 imageMessageDto.setType(MessageType.IMAGE);
                 imageMessageDto.setId(m.getId());
                 imageMessageDto.setFrom(m.getFrom());
-                imageMessageDto.setTarget(m.getTarget());
                 imageMessageDto.setDate(m.getDate());
                 commonMessageDtoList.add(imageMessageDto);
             }
@@ -92,7 +101,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     public MessageSendStatusDto sendImageMessage(ChatImageMessageDto messageDto) {
         ChatImageMessage message = new ChatImageMessage();
         message.setTarget(messageDto.getTarget());
-        message.setImageBase64(message.getImageBase64());
+        message.setImageBase64(messageDto.getImageBase64());
         return imageMessageService.handler(message);
     }
 
@@ -101,5 +110,39 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         AddFriendMessage message = new AddFriendMessage();
         message.setTarget(messageDto.getTarget());
         return addFriendMessageService.handler(message);
+    }
+
+    @Override
+    public Map<Long, Integer> getAllUnreadCount() {
+        //TODO: 完善其他类型的消息
+        Account account = super.getLoginUser().getAccount();
+        List<ChatTextMessage> unreadMessages = chatTextMessageRepository.findUnreadMessagesForAllFriends(account);
+        // 未读消息统计
+        HashMap<Long, Integer> map = new HashMap<>(50);
+        unreadMessages.forEach(message -> {
+            Account from = message.getFrom();
+            long id = from.getId();
+            if (map.isEmpty()) {
+                map.put(id, 1);
+            } else if (map.get(id) == null) {
+                map.put(id, 1);
+            } else {
+                map.replace(id, map.get(id) + 1);
+            }
+        });
+        return map;
+    }
+
+    @Override
+    public boolean confirmationMessage(long id) {
+        //TODO: 完善其他类型的消息
+        boolean isFriend = super.verifyIsFriend(id);
+        if (isFriend) {
+            Account account = new Account();
+            account.setId(id);
+            int i = chatTextMessageRepository.modifyMessageStatusRead(account);
+            return i >= 0;
+        }
+        return false;
     }
 }

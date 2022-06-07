@@ -7,7 +7,9 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.groups.Default;
 
 /**
  * @author Augenstern
@@ -17,13 +19,19 @@ import javax.validation.constraints.Pattern;
 @Setter
 @ToString
 public class AccountDto {
-    @Min(1)
+    @Min(groups = Group.Add.class, value = 1)
     private Long id;
+    @NotNull(groups = Group.Find.class)
     private String username;
-    @Length(max = 4)
+    @Length(groups = Group.Add.class, max = 4)
     private String name;
-    @Pattern(regexp = "[0-9]{11}")
+    @Pattern(groups = Group.Add.class, regexp = "[0-9]{11}")
     private String phone;
-    @Range(min = 1, max = 150)
+    @Range(groups = Group.Add.class, min = 1, max = 150)
     private Integer age;
+
+    public interface Group extends Default {
+        interface Add extends Group {}
+        interface Find extends Group {}
+    }
 }

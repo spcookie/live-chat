@@ -31,7 +31,7 @@ public class LogoutHandler implements LogoutSuccessHandler {
                 .message("退出登录成功")
                 .build();
         ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(request);
+        String json = mapper.writeValueAsString(result);
         response.getWriter().print(json);
     }
 }

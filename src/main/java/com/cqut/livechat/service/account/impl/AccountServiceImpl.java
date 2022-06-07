@@ -9,6 +9,7 @@ import com.cqut.livechat.entity.auth.User;
 import com.cqut.livechat.entity.user.Account;
 import com.cqut.livechat.repository.auth.RoleRepository;
 import com.cqut.livechat.repository.auth.UserRepository;
+import com.cqut.livechat.service.BaseService;
 import com.cqut.livechat.service.account.AccountService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ import java.util.Optional;
 @Service
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
-public class AccountServiceImpl implements AccountService {
+public class AccountServiceImpl extends BaseService implements AccountService {
 
     @Autowired
     private UserRepository userRepository;

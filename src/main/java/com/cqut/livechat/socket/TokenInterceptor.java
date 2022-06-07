@@ -6,6 +6,7 @@ import com.cqut.livechat.redis.auth.UserRedisUtil;
 import com.cqut.livechat.utils.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.stereotype.Component;
@@ -27,7 +28,7 @@ public class TokenInterceptor implements HandshakeInterceptor {
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
         HttpHeaders headers = request.getHeaders();
-        List<String> authorization = headers.get(Security.AUTHORIZATION.getVal());
+        List<String> authorization = headers.get(Security.SEC_WEBSOCKET_PROTOCOL.getVal());
         if (!ObjectUtils.isEmpty(authorization)) {
             if (!authorization.isEmpty()) {
                 // 获取Token
@@ -37,6 +38,9 @@ public class TokenInterceptor implements HandshakeInterceptor {
                 User user = UserRedisUtil.getUser(id);
                 // 将用户信息放入attributes，以便后续Socket操作使用
                 attributes.put(Security.USER.getVal(), user);
+                // 响应子协议(用于鉴权)
+                HttpHeaders responseHeaders = response.getHeaders();
+                responseHeaders.add("Sec-WebSocket-Protocol", token);
                 return true;
             }
         }

@@ -1,5 +1,6 @@
 package com.cqut.livechat.entity.message;
 
+import com.cqut.livechat.constant.MessageStatus;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -29,6 +30,8 @@ public class ChatImageMessage extends CommonMessage {
     private String imageBase64;
     @Column(name = "chat_image", columnDefinition = "mediumblob", nullable = false)
     private byte[] image;
+    @Column(name = "chat_status", nullable = false)
+    private MessageStatus messageStatus = MessageStatus.UNREAD;
 
     public byte[] getImage() {
         if (image == null) {

@@ -1,14 +1,13 @@
 package com.cqut.livechat.controller.account;
 
 import com.cqut.livechat.dto.common.Result;
+import com.cqut.livechat.dto.user.AccountDto;
 import com.cqut.livechat.dto.user.UserDto;
+import com.cqut.livechat.entity.auth.User;
 import com.cqut.livechat.service.account.impl.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Augenstern
@@ -22,7 +21,7 @@ public class AccountController {
     private AccountServiceImpl accountService;
 
     @PutMapping("/register")
-    public Result<Void> registeredAccount(@RequestBody @Validated UserDto accountDto) {
+    public Result<Void> registeredAccount(@RequestBody @Validated(value = AccountDto.Group.Add.class) UserDto accountDto) {
         return accountService.registeredAccount(accountDto);
     }
 }

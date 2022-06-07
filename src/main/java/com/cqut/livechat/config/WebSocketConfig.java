@@ -23,6 +23,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(chatLinkHandler, "/websocket").addInterceptors(tokenInterceptor).setAllowedOrigins("*");
+        registry.addHandler(chatLinkHandler, "/socket/chat")
+                .addInterceptors(tokenInterceptor)
+                .setAllowedOrigins("http://localhost:3000");
     }
 }

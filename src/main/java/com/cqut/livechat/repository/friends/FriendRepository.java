@@ -2,6 +2,7 @@ package com.cqut.livechat.repository.friends;
 
 import com.cqut.livechat.entity.auth.User;
 import com.cqut.livechat.entity.friends.FriendShip;
+import com.cqut.livechat.entity.user.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -21,7 +22,7 @@ public interface FriendRepository extends JpaRepository<FriendShip, Long>, JpaSp
      * @return 好友关系
      */
     @Query("from FriendShip f where f.user = ?1 or f.friend = ?1")
-    List<FriendShip> findFriendShip(User user);
+    List<FriendShip> findFriendShip(Account user);
 
     /**
      * 根据id删除好友

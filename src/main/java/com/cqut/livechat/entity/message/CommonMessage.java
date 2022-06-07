@@ -1,6 +1,9 @@
 package com.cqut.livechat.entity.message;
 
+import com.cqut.livechat.constant.MessageStatus;
 import com.cqut.livechat.entity.BaseEntity;
+import com.cqut.livechat.entity.auth.User;
+import com.cqut.livechat.entity.user.Account;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,11 +24,13 @@ import java.util.Objects;
 @Entity
 @Table(name = "chat_common_message")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class CommonMessage extends BaseEntity implements Serializable {
-    @Column(name = "chat_from", nullable = false)
-    private Long from;
-    @Column(name = "chat_target", nullable = false)
-    private Long target;
+public class CommonMessage extends BaseEntity {
+    @JoinColumn(name = "chat_from", nullable = false)
+    @ManyToOne
+    private Account from;
+    @JoinColumn(name = "chat_target", nullable = false)
+    @ManyToOne
+    private Account target;
     @Column(name = "chat_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;

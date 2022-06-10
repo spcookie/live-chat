@@ -1,6 +1,5 @@
 package com.cqut.livechat.repository.message;
 
-import com.cqut.livechat.entity.auth.User;
 import com.cqut.livechat.entity.message.CommonMessage;
 import com.cqut.livechat.entity.user.Account;
 import org.springframework.data.domain.PageRequest;

@@ -1,9 +1,7 @@
 package com.cqut.livechat.dto.message;
 
-import com.cqut.livechat.constant.MessageStatus;
 import com.cqut.livechat.constant.SendStatus;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 

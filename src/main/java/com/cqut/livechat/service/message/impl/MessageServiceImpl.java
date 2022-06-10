@@ -7,7 +7,7 @@ import com.cqut.livechat.entity.message.ChatImageMessage;
 import com.cqut.livechat.entity.message.ChatTextMessage;
 import com.cqut.livechat.entity.message.CommonMessage;
 import com.cqut.livechat.entity.user.Account;
-import com.cqut.livechat.repository.message.AddFriendMessageRepository;
+import com.cqut.livechat.repository.message.ChatImageMessageRepository;
 import com.cqut.livechat.repository.message.ChatTextMessageRepository;
 import com.cqut.livechat.repository.message.CommonMessageRepository;
 import com.cqut.livechat.service.BaseService;
@@ -39,7 +39,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     @Autowired
     private ChatTextMessageRepository chatTextMessageRepository;
     @Autowired
-    private AddFriendMessageRepository addFriendMessageRepository;
+    private ChatImageMessageRepository chatImageMessageRepository;
     @Autowired
     private CommonMessageHandler<ChatTextMessage> textMessageService;
     @Autowired
@@ -114,12 +114,18 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
     @Override
     public Map<Long, Integer> getAllUnreadCount() {
-        //TODO: 完善其他类型的消息
         Account account = super.getLoginUser().getAccount();
-        List<ChatTextMessage> unreadMessages = chatTextMessageRepository.findUnreadMessagesForAllFriends(account);
+        // 查询未读文本消息
+        List<ChatTextMessage> unreadTextMessages = chatTextMessageRepository.findUnreadMessagesForAllFriends(account);
+        // 查询未读图片消息
+        List<ChatImageMessage> unreadImageMessages = chatImageMessageRepository.findUnreadMessagesForAllFriends(account);
+        // 合并消息
+        List<CommonMessage> commonMessages = new ArrayList<>();
+        commonMessages.addAll(unreadImageMessages);
+        commonMessages.addAll(unreadTextMessages);
         // 未读消息统计
         HashMap<Long, Integer> map = new HashMap<>(50);
-        unreadMessages.forEach(message -> {
+        commonMessages.forEach(message -> {
             Account from = message.getFrom();
             long id = from.getId();
             if (map.isEmpty()) {
@@ -135,13 +141,13 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
     @Override
     public boolean confirmationMessage(long id) {
-        //TODO: 完善其他类型的消息
         boolean isFriend = super.verifyIsFriend(id);
         if (isFriend) {
             Account account = new Account();
             account.setId(id);
             int i = chatTextMessageRepository.modifyMessageStatusRead(account);
-            return i >= 0;
+            int j = chatImageMessageRepository.modifyMessageStatusRead(account);
+            return i + j >= 0;
         }
         return false;
     }

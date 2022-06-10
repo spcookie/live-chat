@@ -1,8 +1,6 @@
 package com.cqut.livechat.entity.message;
 
-import com.cqut.livechat.constant.MessageStatus;
 import com.cqut.livechat.entity.BaseEntity;
-import com.cqut.livechat.entity.auth.User;
 import com.cqut.livechat.entity.user.Account;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +8,6 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 

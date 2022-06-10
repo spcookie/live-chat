@@ -1,7 +1,6 @@
 package com.cqut.livechat.entity.friends;
 
 import com.cqut.livechat.entity.BaseEntity;
-import com.cqut.livechat.entity.auth.User;
 import com.cqut.livechat.entity.user.Account;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

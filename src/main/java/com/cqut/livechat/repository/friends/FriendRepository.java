@@ -1,6 +1,5 @@
 package com.cqut.livechat.repository.friends;
 
-import com.cqut.livechat.entity.auth.User;
 import com.cqut.livechat.entity.friends.FriendShip;
 import com.cqut.livechat.entity.user.Account;
 import org.springframework.data.jpa.repository.JpaRepository;

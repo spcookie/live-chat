@@ -2,7 +2,6 @@ package com.cqut.livechat.controller.message;
 
 import com.cqut.livechat.dto.common.Result;
 import com.cqut.livechat.dto.message.*;
-import com.cqut.livechat.entity.auth.User;
 import com.cqut.livechat.entity.user.Account;
 import com.cqut.livechat.service.message.MessageService;
 import org.hibernate.validator.constraints.Range;

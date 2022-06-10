@@ -8,16 +8,13 @@ import com.cqut.livechat.dto.user.AccountDto;
 import com.cqut.livechat.entity.auth.User;
 import com.cqut.livechat.entity.friends.FriendShip;
 import com.cqut.livechat.entity.message.AddFriendMessage;
-import com.cqut.livechat.entity.message.CommonMessage;
 import com.cqut.livechat.entity.user.Account;
-import com.cqut.livechat.repository.auth.UserRepository;
 import com.cqut.livechat.repository.friends.FriendRepository;
 import com.cqut.livechat.repository.message.AddFriendMessageRepository;
 import com.cqut.livechat.repository.user.AccountRepository;
 import com.cqut.livechat.service.BaseService;
 import com.cqut.livechat.service.friends.CrudFriendService;
 import com.cqut.livechat.socket.ChatSocketCache;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.TextMessage;
 
 import java.io.IOException;
-import java.util.*;
-import java.util.function.Predicate;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**

@@ -1,7 +1,6 @@
 package com.cqut.livechat.service.message;
 
 import com.cqut.livechat.dto.message.*;
-import com.cqut.livechat.entity.message.AddFriendMessage;
 
 import java.util.List;
 import java.util.Map;

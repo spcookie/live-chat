@@ -1,6 +1,5 @@
 package com.cqut.livechat.repository.message;
 
-import com.cqut.livechat.constant.MessageStatus;
 import com.cqut.livechat.entity.message.AddFriendMessage;
 import com.cqut.livechat.entity.user.Account;
 import org.springframework.data.jpa.repository.JpaRepository;

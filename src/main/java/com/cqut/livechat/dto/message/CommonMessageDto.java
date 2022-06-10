@@ -1,7 +1,6 @@
 package com.cqut.livechat.dto.message;
 
 import com.cqut.livechat.constant.MessageType;
-import com.cqut.livechat.entity.auth.User;
 import com.cqut.livechat.entity.user.Account;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;

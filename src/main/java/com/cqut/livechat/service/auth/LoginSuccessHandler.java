@@ -1,11 +1,8 @@
 package com.cqut.livechat.service.auth;
 
 import com.cqut.livechat.dto.common.Result;
-import com.cqut.livechat.dto.common.ResultCode;
-import com.cqut.livechat.dto.user.AccountDto;
 import com.cqut.livechat.dto.user.TokenAndUserDto;
 import com.cqut.livechat.entity.auth.User;
-import com.cqut.livechat.entity.user.Account;
 import com.cqut.livechat.redis.auth.UserRedisUtil;
 import com.cqut.livechat.utils.TokenUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;

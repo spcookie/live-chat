@@ -40,6 +40,15 @@ public class ChatImageMessage extends CommonMessage {
         return image;
     }
 
+    public String getImageBase64() {
+        if (imageBase64 == null) {
+            if (image != null) {
+                imageBase64 = new String(this.getImage(), StandardCharsets.UTF_8);
+            }
+        }
+        return imageBase64;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

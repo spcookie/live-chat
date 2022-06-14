@@ -52,6 +52,8 @@ public class ImageMessageHandlerImpl extends AbstractCommonMessageHandler<ChatIm
     @Override
     protected ChatImageMessage saveMessage(ChatImageMessage message) {
         // 持久化消息
+        // bug: 框架底层似乎没有调用方法来取得值, 导致设置的二进制数据为空, 这里手动调用一下
+        message.getImage();
         return imageMessageRepository.save(message);
     }
 }

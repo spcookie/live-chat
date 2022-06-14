@@ -8,8 +8,10 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +31,7 @@ public class MessageController {
     public Result<List<CommonMessageDto>> loadFriendMessage(
             @PathVariable("id") @Min(1) long id,
             @PathVariable("page") @Min(0) int page,
-            @PathVariable("size") @Range(min = 0, max = 10) int size
+            @PathVariable("size") @Range(min = 0, max = 50, message = "查询条数在0-50之间") int size
     ) {
         List<CommonMessageDto> simpleMessage = messageService.getSimpleMessage(id, page, size);
         if (simpleMessage == null) {
@@ -49,6 +51,15 @@ public class MessageController {
     public Result<MessageSendStatusDto> sendImageMessage(@RequestBody @Validated ChatImageMessageDto message) {
         MessageSendStatusDto result = messageService.sendImageMessage(message);
         return Result.success(null, result);
+    }
+
+    @PostMapping("/send/file")
+    public Result<MessageSendStatusDto> uploadFile(
+            @RequestParam("target") @Min(0) Long id,
+            @RequestPart("file") @NotNull MultipartFile multipartFile
+    ) {
+        MessageSendStatusDto dto = messageService.sendFileMessage(id, multipartFile);
+        return Result.success(null, dto);
     }
 
     @PutMapping("/send/addFriend/{target}")

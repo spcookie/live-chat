@@ -87,7 +87,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors();
         //拦截规则
         http.authorizeRequests()
-                .antMatchers("/auth/login", "/account/register").anonymous()
+                .antMatchers("/api/account/register", "/fileResource/**").anonymous()
                 .anyRequest().authenticated();
         // 禁用session
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);

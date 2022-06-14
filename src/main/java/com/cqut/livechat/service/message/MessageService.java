@@ -1,6 +1,7 @@
 package com.cqut.livechat.service.message;
 
 import com.cqut.livechat.dto.message.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,14 @@ public interface MessageService {
      * @return 发送状态信息
      */
     MessageSendStatusDto sendImageMessage(ChatImageMessageDto messageDto);
+
+    /**
+     * 发送文件消息
+     * @param id 接收方id
+     * @param file 发送的文件
+     * @return 发送状态信息
+     */
+    MessageSendStatusDto sendFileMessage(Long id, MultipartFile file);
 
     /**
      * 发送添加朋友消息

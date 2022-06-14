@@ -19,6 +19,10 @@ public enum ResultCode {
      * 没有权限
      */
     NO_PERMISSION(401),
+    /**
+     * 参数校验失败
+     */
+    PARAMETER_VERIFICATION_FAILED(405)
     ;
 
     /**

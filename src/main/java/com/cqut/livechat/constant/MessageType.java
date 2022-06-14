@@ -1,9 +1,6 @@
 package com.cqut.livechat.constant;
 
-import com.cqut.livechat.entity.message.AddFriendMessage;
-import com.cqut.livechat.entity.message.ChatImageMessage;
-import com.cqut.livechat.entity.message.ChatTextMessage;
-import com.cqut.livechat.entity.message.CommonMessage;
+import com.cqut.livechat.entity.message.*;
 
 /**
  * @author Augenstern
@@ -25,7 +22,11 @@ public enum MessageType {
     /**
      * 接受好友请求消息
      */
-    ACCEPT_ADD_FRIEND(CommonMessage.class)
+    ACCEPT_ADD_FRIEND(CommonMessage.class),
+    /**
+     * 文件
+     */
+    FILE(ChatFileMessage.class)
     ;
 
     private final Class<? extends CommonMessage> type;

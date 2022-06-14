@@ -6,7 +6,6 @@ import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.groups.Default;
@@ -19,16 +18,17 @@ import javax.validation.groups.Default;
 @Setter
 @ToString
 public class AccountDto {
-    @Min(groups = Group.Add.class, value = 1)
     private Long id;
     @NotNull(groups = Group.Find.class)
     private String username;
-    @Length(groups = Group.Add.class, max = 4)
+    @Length(groups = Group.Add.class, max = 10)
     private String name;
     @Pattern(groups = Group.Add.class, regexp = "[0-9]{11}")
     private String phone;
     @Range(groups = Group.Add.class, min = 1, max = 150)
     private Integer age;
+    @NotNull
+    private String sex;
 
     public interface Group extends Default {
         interface Add extends Group {}

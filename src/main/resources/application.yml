@@ -1,11 +1,15 @@
-debug: true
-
 server:
   port: 8080
 
 spring:
   application:
-    name: live-chart
+    name: live-chat
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 125MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
   datasource:
     url: jdbc:mysql://localhost:3306/liveChart?charset=utf8mb4
     username: root
@@ -18,8 +22,10 @@ spring:
     generate-ddl: true
     database: mysql
     open-in-view: false
-
   redis:
     host: localhost
     port: 6379
     database: 0
+
+file:
+  dist: E:/Augenstetn/AllProject/LiveChat/files/

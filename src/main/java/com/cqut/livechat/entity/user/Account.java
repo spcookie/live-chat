@@ -32,6 +32,8 @@ public class Account extends BaseEntity {
     private String phone;
     @Column(name = "chat_account_age", length = 3)
     private Integer age;
+    @Column(name = "chat_account_sex", length = 4, nullable = false)
+    private String sex;
 
     @Override
     public boolean equals(Object o) {

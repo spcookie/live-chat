@@ -65,10 +65,10 @@ public class CrudFriendServiceImpl extends BaseService implements CrudFriendServ
             // 移除不需要的数据
             AccountDto accountDto = new AccountDto();
             accountDto.setId(f.getId());
-//            accountDto.setUsername(f.getUsername());
             accountDto.setName(f.getName());
             accountDto.setPhone(f.getPhone());
             accountDto.setAge(f.getAge());
+            accountDto.setSex(f.getSex());
             return accountDto;
         }).collect(Collectors.toList());
     }

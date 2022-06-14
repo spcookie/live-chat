@@ -1,10 +1,12 @@
 package com.cqut.livechat.config;
 
+import com.cqut.livechat.config.properties.FileProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.format.FormatterRegistry;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -13,6 +15,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
+
+    @Autowired
+    private FileProperties fileProperties;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -30,17 +35,8 @@ public class MvcConfig implements WebMvcConfigurer {
     }
 
     @Override
-    public void addFormatters(FormatterRegistry registry) {
-//        registry.addFormatter(new Formatter<Date>() {
-//            @Override
-//            public Date parse(String text, Locale locale) throws ParseException {
-//                LocalDateTime parse = LocalDateTime.parse(text, DateTimeFormatter.ofPattern(""));
-//            }
-//
-//            @Override
-//            public String print(Date object, Locale locale) {
-//                return null;
-//            }
-//        });
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/fileResource/**")
+                .addResourceLocations("file:" + fileProperties.getDist());
     }
 }

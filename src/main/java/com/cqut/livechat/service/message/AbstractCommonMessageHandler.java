@@ -66,7 +66,7 @@ public abstract class AbstractCommonMessageHandler<T extends CommonMessage> exte
         // 持久保存消息
         T save = this.saveMessage(message);
         if (save.getId() != null) {
-            log.info("消息保存成功 -> " + save);
+            log.info("消息保存成功");
             // 获取接收者登录状态
             UserStatus status = userStatusService.getUserLoginStatus(target);
             if (status.equals(UserStatus.ON_LINE)) {

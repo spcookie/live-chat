@@ -1,16 +1,15 @@
 package com.cqut.livechat.service.message.impl;
 
 import com.cqut.livechat.constant.MessageType;
+import com.cqut.livechat.constant.SendStatus;
 import com.cqut.livechat.dto.message.*;
-import com.cqut.livechat.entity.message.AddFriendMessage;
-import com.cqut.livechat.entity.message.ChatImageMessage;
-import com.cqut.livechat.entity.message.ChatTextMessage;
-import com.cqut.livechat.entity.message.CommonMessage;
+import com.cqut.livechat.entity.message.*;
 import com.cqut.livechat.entity.user.Account;
 import com.cqut.livechat.repository.message.ChatImageMessageRepository;
 import com.cqut.livechat.repository.message.ChatTextMessageRepository;
 import com.cqut.livechat.repository.message.CommonMessageRepository;
 import com.cqut.livechat.service.BaseService;
+import com.cqut.livechat.service.file.FileService;
 import com.cqut.livechat.service.message.CommonMessageHandler;
 import com.cqut.livechat.service.message.MessageService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +18,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Augenstern
@@ -46,6 +43,10 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     private CommonMessageHandler<ChatImageMessage> imageMessageService;
     @Autowired
     private CommonMessageHandler<AddFriendMessage> addFriendMessageService;
+    @Autowired
+    private CommonMessageHandler<ChatFileMessage> fileMessageService;
+    @Autowired
+    private FileService fileService;
 
     @Override
     public List<CommonMessageDto> getSimpleMessage(long id, int page, int size) {
@@ -84,6 +85,17 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                 imageMessageDto.setFrom(m.getFrom());
                 imageMessageDto.setDate(m.getDate());
                 commonMessageDtoList.add(imageMessageDto);
+            } else {
+                ChatFileMessage m = (ChatFileMessage) message;
+                ChatFileMessageDto fileMessageDto = new ChatFileMessageDto();
+                fileMessageDto.setType(MessageType.FILE);
+                fileMessageDto.setId(m.getId());
+                fileMessageDto.setFrom(m.getFrom());
+                fileMessageDto.setDate(m.getDate());
+                fileMessageDto.setSize(m.getSize());
+                fileMessageDto.setPath(m.getPath());
+                fileMessageDto.setOriginalFileName(m.getOriginalFileName());
+                commonMessageDtoList.add(fileMessageDto);
             }
         });
         return commonMessageDtoList;
@@ -103,6 +115,27 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         message.setTarget(messageDto.getTarget());
         message.setImageBase64(messageDto.getImageBase64());
         return imageMessageService.handler(message);
+    }
+
+    @Override
+    public MessageSendStatusDto sendFileMessage(Long id, MultipartFile file) {
+        Optional<String> optionalPath = fileService.saveFileToDist(file);
+        MessageSendStatusDto dto;
+        if (optionalPath.isPresent()) {
+            // 若文件保存到目录下成功，则开始处理消息
+            String path = optionalPath.get();
+            ChatFileMessage fileMessage = new ChatFileMessage();
+            Account account = new Account();
+            account.setId(id);
+            fileMessage.setTarget(account);
+            fileMessage.setOriginalFileName(file.getOriginalFilename());
+            fileMessage.setSize(file.getSize());
+            fileMessage.setPath(path);
+            dto = fileMessageService.handler(fileMessage);
+        } else {
+            dto = new MessageSendStatusDto(SendStatus.SEND_FAIL, "文化上传失败");
+        }
+        return dto;
     }
 
     @Override

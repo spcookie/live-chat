@@ -1,5 +1,6 @@
 package com.cqut.livechat;
 
+import cn.hutool.core.util.IdUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +21,11 @@ class LiveChatValidationTests {
         String encode = passwordEncoder.encode("123456");
         System.out.println(encode);
         // $2a$10$yPTiPyvfhGIENHLEOfCaE.B1DQc1rHCATWwEdkvU52L6vFp5Rrklq
+    }
+
+    @Test
+    void generate_account_number() {
+        System.out.println(IdUtil.nanoId(10));
     }
 
 }

@@ -61,6 +61,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
         account.setName(dtoAccount.getName());
         account.setAge(dtoAccount.getAge());
         account.setPhone(phone);
+        account.setSex(dtoAccount.getSex());
         user.setAccount(account);
         // 添加账户状态
         user.setEnabled(true);
@@ -71,7 +72,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
         Role role = optionalRole.get();
         user.setRoles(Collections.singleton(role));
         // 保存用户信息
-        userRepository.save(user);
+        User save = userRepository.save(user);
         dtoAccount.setUsername(number);
         return Result.success("注册成功", dtoAccount);
     }

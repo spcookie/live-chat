@@ -17,5 +17,5 @@ public interface AddFriendMessageRepository extends JpaRepository<AddFriendMessa
      * @param account 登录用户
      * @return 好友请求
      */
-    List<AddFriendMessage> findAllByAndTargetIs(Account account);
+    List<AddFriendMessage> findAllByTargetIs(Account account);
 }

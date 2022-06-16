@@ -138,7 +138,6 @@ public class CrudFriendServiceImpl extends BaseService implements CrudFriendServ
 
     @Override
     public List<AccountDto> findAllNotFriend(AccountDto accountDto) {
-        //TODO: 细化查询用户
         Account account = new Account();
         account.setUsername(accountDto.getUsername());
         account.setName(accountDto.getName());
@@ -185,7 +184,7 @@ public class CrudFriendServiceImpl extends BaseService implements CrudFriendServ
     @Override
     public List<AddFriendMessageDto> getAllFriendVerifyMessage() {
         Account account = super.getLoginUser().getAccount();
-        List<AddFriendMessage> messages = addFriendMessageRepository.findAllByAndTargetIs(account);
+        List<AddFriendMessage> messages = addFriendMessageRepository.findAllByTargetIs(account);
         List<AddFriendMessageDto> dtos = new ArrayList<>();
         messages.forEach(message -> {
             AddFriendMessageDto dto = new AddFriendMessageDto();

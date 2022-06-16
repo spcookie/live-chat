@@ -1,5 +1,6 @@
 package com.cqut.livechat.controller;
 
+import com.cqut.livechat.LiveChatException;
 import com.cqut.livechat.dto.common.Result;
 import com.cqut.livechat.dto.common.ResultCode;
 import lombok.extern.slf4j.Slf4j;
@@ -45,5 +46,10 @@ public class ExceptionHandleController {
                 .message("参数校验失败")
                 .data(message)
                 .build();
+    }
+
+    @ExceptionHandler(LiveChatException.class)
+    public Result<String> liveChatException(Exception e) {
+        return Result.error(e.getMessage(), null);
     }
 }

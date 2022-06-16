@@ -26,7 +26,7 @@ public class Account extends BaseEntity {
 
     @Column(name = "chat_account_username", length = 11, nullable = false)
     private String username;
-    @Column(name = "chat_account_name", length = 4, nullable = false)
+    @Column(name = "chat_account_name", length = 20, nullable = false)
     private String name;
     @Column(name = "chat_account_phone", length = 11)
     private String phone;

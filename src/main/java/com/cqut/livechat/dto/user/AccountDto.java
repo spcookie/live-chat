@@ -27,7 +27,7 @@ public class AccountDto {
     private String phone;
     @Range(groups = Group.Add.class, min = 1, max = 150)
     private Integer age;
-    @NotNull
+    @NotNull(groups = Group.Add.class)
     private String sex;
 
     public interface Group extends Default {

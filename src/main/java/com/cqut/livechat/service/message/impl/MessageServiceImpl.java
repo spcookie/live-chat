@@ -85,7 +85,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                 imageMessageDto.setFrom(m.getFrom());
                 imageMessageDto.setDate(m.getDate());
                 commonMessageDtoList.add(imageMessageDto);
-            } else {
+            } else if (message instanceof ChatFileMessage){
                 ChatFileMessage m = (ChatFileMessage) message;
                 ChatFileMessageDto fileMessageDto = new ChatFileMessageDto();
                 fileMessageDto.setType(MessageType.FILE);

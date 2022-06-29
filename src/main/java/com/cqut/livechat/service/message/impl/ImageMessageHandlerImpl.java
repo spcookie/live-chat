@@ -32,11 +32,12 @@ public class ImageMessageHandlerImpl extends AbstractCommonMessageHandler<ChatIm
     protected boolean sendTargetMessage(WebSocketSession session, ChatImageMessage message) {
         // 将byte转换为Base64
         String imageBase64 = new String(message.getImage(), StandardCharsets.UTF_8);
-        ChatImageMessageDto messageDto = ChatImageMessageDto.builder().imageBase64(imageBase64).build();
+        ChatImageMessageDto messageDto = new ChatImageMessageDto();
         messageDto.setType(MessageType.IMAGE);
         messageDto.setId(message.getId());
         messageDto.setFrom(message.getFrom());
         messageDto.setDate(message.getDate());
+        messageDto.setImageBase64(imageBase64);
         try {
             ObjectMapper mapper = new ObjectMapper();
             String value = mapper.writeValueAsString(messageDto);

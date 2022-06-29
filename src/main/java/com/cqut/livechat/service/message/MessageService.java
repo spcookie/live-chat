@@ -11,6 +11,13 @@ import java.util.Map;
  * @date 2022/5/26
  */
 public interface MessageService {
+
+    /**
+     * 查询历史消息
+     * @param queryMessage 查询参数
+     * @return 历史消息
+     */
+    List<? extends CommonMessageDto> findHistoryMessages(QueryMessageDto queryMessage);
     /**
      * 获取好友简单消息
      * @param id 好友id

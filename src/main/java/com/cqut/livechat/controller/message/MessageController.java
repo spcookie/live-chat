@@ -14,6 +14,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Augenstern
@@ -26,6 +27,14 @@ public class MessageController {
 
     @Autowired
     private MessageService messageService;
+
+    @PostMapping("/friend/history")
+    public Result<List<? extends CommonMessageDto>> queryHistoricalMessages(@RequestBody QueryMessageDto queryMessage) {
+        List<? extends CommonMessageDto> historyMessages = messageService.findHistoryMessages(queryMessage);
+        return Objects.isNull(historyMessages)
+                ? Result.error("没有此类型的消息", null)
+                : Result.success("查询历史消息成功", historyMessages);
+    }
 
     @GetMapping("/friend/{id}/{page}/{size}")
     public Result<List<CommonMessageDto>> loadFriendMessage(

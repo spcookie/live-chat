@@ -1,10 +1,12 @@
 package com.cqut.livechat.service.message.impl;
 
+import com.cqut.livechat.LiveChatException;
 import com.cqut.livechat.constant.MessageType;
 import com.cqut.livechat.constant.SendStatus;
 import com.cqut.livechat.dto.message.*;
 import com.cqut.livechat.entity.message.*;
 import com.cqut.livechat.entity.user.Account;
+import com.cqut.livechat.repository.message.ChatFileMessageRepository;
 import com.cqut.livechat.repository.message.ChatImageMessageRepository;
 import com.cqut.livechat.repository.message.ChatTextMessageRepository;
 import com.cqut.livechat.repository.message.CommonMessageRepository;
@@ -13,6 +15,7 @@ import com.cqut.livechat.service.file.FileService;
 import com.cqut.livechat.service.message.CommonMessageHandler;
 import com.cqut.livechat.service.message.MessageService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Augenstern
@@ -38,6 +42,8 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     @Autowired
     private ChatImageMessageRepository chatImageMessageRepository;
     @Autowired
+    private ChatFileMessageRepository chatFileMessageRepository;
+    @Autowired
     private CommonMessageHandler<ChatTextMessage> textMessageService;
     @Autowired
     private CommonMessageHandler<ChatImageMessage> imageMessageService;
@@ -47,6 +53,64 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     private CommonMessageHandler<ChatFileMessage> fileMessageService;
     @Autowired
     private FileService fileService;
+
+    @Override
+    public List<? extends CommonMessageDto> findHistoryMessages(QueryMessageDto queryMessage) {
+        if (!super.verifyIsFriend(queryMessage.getId())) {
+            throw new LiveChatException("非法好友关系");
+        }
+        if (queryMessage.getType().equals(MessageType.TEXT)) {
+            return this.findTextHistoryMessages(queryMessage);
+        } else if (queryMessage.getType().equals(MessageType.IMAGE)) {
+            return this.findImageHistoryMessages(queryMessage);
+        } else if (queryMessage.getType().equals(MessageType.FILE)) {
+            return this.findFileHistoryMessages(queryMessage);
+        } else {
+            return null;
+        }
+    }
+
+    private List<? extends CommonMessageDto> findTextHistoryMessages(QueryMessageDto queryMessage) {
+        PageRequest pageRequest = PageRequest.of(queryMessage.getPage(), queryMessage.getSize());
+        Account from = super.getLoginUser().getAccount();
+        Account target = new Account();
+        target.setId(queryMessage.getId());
+        List<ChatTextMessage> messages = chatTextMessageRepository.findHistoryMessages(from, target, queryMessage.getExample(), pageRequest);
+        return messages.stream().map(message -> {
+            ChatTextMessageDto dto = new ChatTextMessageDto();
+            BeanUtils.copyProperties(message, dto);
+            dto.setType(MessageType.TEXT);
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+    private List<? extends CommonMessageDto> findImageHistoryMessages(QueryMessageDto queryMessage) {
+        PageRequest pageRequest = PageRequest.of(queryMessage.getPage(), queryMessage.getSize());
+        Account from = super.getLoginUser().getAccount();
+        Account target = new Account();
+        target.setId(queryMessage.getId());
+        List<ChatImageMessage> messages = chatImageMessageRepository.findHistoryMessages(from, target, pageRequest);
+        return messages.stream().map(message -> {
+            ChatImageMessageDto dto = new ChatImageMessageDto();
+            BeanUtils.copyProperties(message, dto);
+            dto.setType(MessageType.IMAGE);
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+    private List<? extends CommonMessageDto> findFileHistoryMessages(QueryMessageDto queryMessage) {
+        PageRequest pageRequest = PageRequest.of(queryMessage.getPage(), queryMessage.getSize());
+        Account from = super.getLoginUser().getAccount();
+        Account target = new Account();
+        target.setId(queryMessage.getId());
+        List<ChatFileMessage> messages = chatFileMessageRepository.findHistoryMessages(from, target, pageRequest);
+        return messages.stream().map(message -> {
+            ChatFileMessageDto dto = new ChatFileMessageDto();
+            BeanUtils.copyProperties(message, dto);
+            dto.setType(MessageType.FILE);
+            return dto;
+        }).collect(Collectors.toList());
+    }
 
     @Override
     public List<CommonMessageDto> getSimpleMessage(long id, int page, int size) {
@@ -70,31 +134,22 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                 // 如果是文本消息
                 ChatTextMessage m = (ChatTextMessage) message;
                 ChatTextMessageDto textMessageDto = new ChatTextMessageDto();
+                BeanUtils.copyProperties(m, textMessageDto);
                 textMessageDto.setType(MessageType.TEXT);
-                textMessageDto.setText(m.getText());
-                textMessageDto.setId(m.getId());
-                textMessageDto.setFrom(m.getFrom());
-                textMessageDto.setDate(m.getDate());
                 commonMessageDtoList.add(textMessageDto);
             } else if (message instanceof  ChatImageMessage) {
                 // 如果是图片消息
                 ChatImageMessage m = (ChatImageMessage) message;
-                ChatImageMessageDto imageMessageDto = ChatImageMessageDto.builder().imageBase64(m.getImageBase64()).build();
+                ChatImageMessageDto imageMessageDto = new ChatImageMessageDto();
                 imageMessageDto.setType(MessageType.IMAGE);
-                imageMessageDto.setId(m.getId());
-                imageMessageDto.setFrom(m.getFrom());
-                imageMessageDto.setDate(m.getDate());
+                BeanUtils.copyProperties(m, imageMessageDto);
+                imageMessageDto.setImageBase64(m.getImageBase64());
                 commonMessageDtoList.add(imageMessageDto);
             } else if (message instanceof ChatFileMessage){
                 ChatFileMessage m = (ChatFileMessage) message;
                 ChatFileMessageDto fileMessageDto = new ChatFileMessageDto();
                 fileMessageDto.setType(MessageType.FILE);
-                fileMessageDto.setId(m.getId());
-                fileMessageDto.setFrom(m.getFrom());
-                fileMessageDto.setDate(m.getDate());
-                fileMessageDto.setSize(m.getSize());
-                fileMessageDto.setPath(m.getPath());
-                fileMessageDto.setOriginalFileName(m.getOriginalFileName());
+                BeanUtils.copyProperties(m, fileMessageDto);
                 commonMessageDtoList.add(fileMessageDto);
             }
         });

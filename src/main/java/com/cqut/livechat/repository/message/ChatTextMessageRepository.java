@@ -2,6 +2,7 @@ package com.cqut.livechat.repository.message;
 
 import com.cqut.livechat.entity.message.ChatTextMessage;
 import com.cqut.livechat.entity.user.Account;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -40,4 +41,16 @@ public interface ChatTextMessageRepository extends JpaRepository<ChatTextMessage
     @Modifying
     @Query("update ChatTextMessage m set m.messageStatus = 3 where m.from = :account")
     int modifyMessageStatusRead(@Param("account") Account account);
+
+
+    /**
+     *  查询历史文本消息
+     * @param from id
+     * @param target id
+     * @param text 文本
+     * @param pageRequest 分页
+     * @return 消息
+     */
+    @Query("from ChatTextMessage m where ((m.from = ?1 and m.target = ?2) or (m.from = ?2 and m.target = ?1)) and m.text like %?3% order by m.date desc")
+    List<ChatTextMessage> findHistoryMessages(Account from, Account target, String text, PageRequest pageRequest);
 }

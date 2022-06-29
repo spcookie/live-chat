@@ -2,6 +2,7 @@ package com.cqut.livechat.repository.message;
 
 import com.cqut.livechat.entity.message.ChatImageMessage;
 import com.cqut.livechat.entity.user.Account;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -40,4 +41,14 @@ public interface ChatImageMessageRepository extends JpaRepository<ChatImageMessa
     @Modifying
     @Query("update ChatImageMessage m set m.messageStatus = 3 where m.from = :account")
     int modifyMessageStatusRead(@Param("account") Account account);
+
+    /**
+     *  查询历史图片消息
+     * @param from id
+     * @param target id
+     * @param pageRequest 分页
+     * @return 消息
+     */
+    @Query("from ChatImageMessage m where (m.from = ?1 and m.target = ?2) or (m.from = ?2 and m.target = ?1) order by m.date desc")
+    List<ChatImageMessage> findHistoryMessages(Account from, Account target, PageRequest pageRequest);
 }
